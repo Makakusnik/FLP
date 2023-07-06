@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:-moz-focusring {
+		outline: none;
+	}
+
+	.hack {
+		grid-row: 1;
+		grid-column: 1;
+	}
+}
