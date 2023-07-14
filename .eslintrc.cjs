@@ -26,5 +26,16 @@ module.exports = {
 				parser: '@typescript-eslint/parser'
 			}
 		}
-	]
+	],
+	rules: {
+		'svelte/block-lang': [
+			'error',
+			{
+				enforceScriptPresent: false,
+				enforceStylePresent: false,
+				script: 'ts', // a list of languages or null to signify no language specified
+				style: 'postcss' // same as for script, a single value can be used instead of an array.
+			}
+		]
+	}
 };
