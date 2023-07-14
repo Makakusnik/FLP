@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import CtaButton from '$lib/common/buttons/CTAButton.svelte';
 	import GhostButton from '$lib/common/buttons/GhostButton.svelte';
 	import SectionContentWrapper from '$lib/common/containers/main/SectionContentWrapper.svelte';

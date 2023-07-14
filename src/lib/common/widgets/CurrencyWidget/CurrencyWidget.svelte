@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Dropdown from '../../dropdown/Dropdown.svelte';
 	import DropdownItem from '../../dropdown/DropdownItem.svelte';
 	import WidgetContainer from '../WidgetContainer.svelte';

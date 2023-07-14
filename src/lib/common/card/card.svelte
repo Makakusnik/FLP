@@ -3,21 +3,9 @@
 	export let icon = 'carbon:unknown-filled';
 	export let title = 'unknown';
 	export let isActive = false;
-
-	const handleKeyDown = (
-		e: KeyboardEvent & {
-			currentTarget: EventTarget & HTMLDivElement;
-		}
-	) => {
-		isActive = !isActive;
-		console.log(e.code);
-		if (e.code) {
-		}
-	};
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-<div on:click on:keypress tabindex="0" class="wrapper" class:active={isActive}>
+<div on:click on:keypress tabindex="0" class="wrapper" role="button" class:active={isActive}>
 	<span class="flex gap-x-2">
 		<Icon {icon} class="text-purple-200 h-6 w-6" />
 		<p class="font-semibold text-purple-200">{title}</p>
@@ -28,7 +16,7 @@
 	</p>
 </div>
 
-<style>
+<style lang="postcss">
 	.wrapper {
 		@apply overflow-hidden flex flex-col cursor-pointer select-none gap-y-2 p-6 w-1/3 h-[150px] rounded-xl relative isolate transition-transform duration-700;
 	}

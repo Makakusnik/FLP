@@ -10,7 +10,9 @@
 		positive: boolean;
 	};
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	type C = $$Generic<typeof SvelteComponent<any, any, any>>;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	export let flagComponent: C extends typeof SvelteComponent<infer P extends Record<string, any>>
 		? P
 		: never;
@@ -21,6 +23,7 @@
 	export let dayChange: DailyChange;
 </script>
 
+/** eslint-disable @typescript-eslint/no-explicit-any */
 <div class="item">
 	<span class="currency"
 		>{#if flagComponent}

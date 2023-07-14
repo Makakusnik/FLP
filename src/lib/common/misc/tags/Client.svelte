@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Icon from '@iconify/svelte';
 	export let icon = 'ant-design:picture-filled';
 </script>

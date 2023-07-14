@@ -19,24 +19,27 @@
 			on:mouseover={() => (activeSection = 0)}
 			on:mouseleave={() => (activeSection = undefined)}
 			on:focus
+			role="img"
 			class="clip clip1"
 		/>
 		<div
 			on:mouseover={() => (activeSection = 1)}
 			on:mouseleave={() => (activeSection = undefined)}
 			on:focus
+			role="img"
 			class="clip clip2"
 		/>
 		<div
 			on:mouseover={() => (activeSection = 2)}
 			on:mouseleave={() => (activeSection = undefined)}
 			on:focus
+			role="img"
 			class="clip clip3"
 		/>
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	p {
 		transition-property: color, transform;
 		transition-duration: 500ms;

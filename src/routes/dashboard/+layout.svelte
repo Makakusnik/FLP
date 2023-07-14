@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Sidebar from './(navigation)/(Sidebar)/Sidebar.svelte';
 	import SidebarParent from './(navigation)/(Sidebar)/SidebarParent.svelte';
 	import AdminNavigation from './(navigation)/Navigation.svelte';

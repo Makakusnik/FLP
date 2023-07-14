@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Technologies from '$lib/svgs/technologies.svelte';
 	import { fly } from 'svelte/transition';
 </script>
@@ -18,7 +18,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.section {
 		@apply w-full relative shadow-2xl p-2;
 		overflow: hidden;

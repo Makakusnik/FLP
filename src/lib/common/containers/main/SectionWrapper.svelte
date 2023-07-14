@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	export let hasGradient = false;
 	let gradient =
 		'after:-z-10 after:absolute after:w-full after:h-full after:bg-purple-radial-gradient-top';

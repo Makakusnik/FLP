@@ -1,6 +1,6 @@
 <button on:click><slot /> </button>
 
-<style>
+<style lang="postcss">
 	button {
 		@apply relative isolate overflow-hidden outline outline-[1px] outline-neutral-400 -outline-offset-2 px-4 py-2 h-fit rounded-md transition-colors duration-500;
 		transition-property: outline-color, color, background-color;

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	export let href = '';
 </script>
 
@@ -6,7 +6,7 @@
 	<slot />
 </a>
 
-<style>
+<style lang="postcss">
 	a {
 		@apply relative duration-300 transition-colors;
 		@apply overflow-hidden;

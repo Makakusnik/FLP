@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Icon from '@iconify/svelte';
 	import TopBar from './(Sidebar)/TopBar.svelte';
 </script>

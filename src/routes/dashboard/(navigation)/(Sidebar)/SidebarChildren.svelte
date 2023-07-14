@@ -1,8 +1,3 @@
-<script>
-	import { dashboardState } from '$lib/stores/dashboard.store';
-	import { fly } from 'svelte/transition';
-</script>
-
 <li class="title">
 	<slot />
 </li>

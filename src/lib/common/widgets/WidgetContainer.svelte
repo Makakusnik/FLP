@@ -1,6 +1,6 @@
 <script lang="ts">
-	export let className: string = '';
-	export let title: string = '';
+	export let className = '';
+	export let title = '';
 	let showTopList = $$slots.dropdown;
 </script>
 

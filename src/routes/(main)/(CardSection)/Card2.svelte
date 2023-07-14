@@ -1,6 +1,5 @@
-<script>
+<script lang="ts">
 	import Phases from '$lib/svgs/phases.svelte';
-	import Phases2 from '$lib/svgs/phases.svelte';
 	import { fly } from 'svelte/transition';
 </script>
 
@@ -19,7 +18,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.section {
 		@apply w-full relative shadow-2xl p-2;
 		overflow: hidden;

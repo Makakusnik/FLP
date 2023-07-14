@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import CtaButton from '$lib/common/buttons/CTAButton.svelte';
 	import GhostButton from '$lib/common/buttons/GhostButton.svelte';
 	import Link from '$lib/common/links/navLink.svelte';
@@ -19,7 +19,7 @@
 	</div>
 </NavigationWrapper>
 
-<style>
+<style lang="postcss">
 	.nav-section {
 		@apply flex py-4;
 	}

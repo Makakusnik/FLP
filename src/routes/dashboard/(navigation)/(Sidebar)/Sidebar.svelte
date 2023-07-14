@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { dashboardState } from '$lib/stores/dashboard.store';
 	const handleBlur = () => {
 		if ($dashboardState.isMenuOpenTemporary) {

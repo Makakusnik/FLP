@@ -1,16 +1,18 @@
-<script>
+<script lang="ts">
 	import Icon from '@iconify/svelte';
 	export let icon = '';
 </script>
 
 <button role="menuitem" class="item" on:click>
-	<Icon {icon} class="icon" />
+	<span class="icon">
+		<Icon {icon} />
+	</span>
 	<p class="text-slate-300">
 		<slot default />
 	</p>
 </button>
 
-<style>
+<style lang="postcss">
 	.item {
 		@apply flex items-center justify-start px-2 py-1 transition-colors;
 		@apply gap-x-2;
@@ -21,7 +23,7 @@
 	}
 
 	.item:hover > .icon {
-		@apply w-10 text-indigo-500;
+		@apply text-indigo-400;
 	}
 
 	.icon {
