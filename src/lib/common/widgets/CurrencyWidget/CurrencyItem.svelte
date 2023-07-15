@@ -23,7 +23,6 @@
 	export let dayChange: DailyChange;
 </script>
 
-/** eslint-disable @typescript-eslint/no-explicit-any */
 <div class="item">
 	<span class="currency"
 		>{#if flagComponent}
