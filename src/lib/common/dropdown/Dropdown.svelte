@@ -1,11 +1,10 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
 	import { fade } from 'svelte/transition';
 	import DropdownDivider from './DropdownDivider.svelte';
 	import { clickOutside } from '$lib/utilities/directives/clickOutside';
+	import DotsIcon from '$lib/assets/icons/DotsIcon.svelte';
 
 	export let title = '';
-	export let titleIcon = '';
 
 	let active = false;
 
@@ -20,16 +19,17 @@
 		class:active
 		on:click={() => {
 			active = !active;
-		}}
-	>
-		<Icon icon="pepicons-pop:dots-y" class="w-5 h-5" />
+		}}>
+		<DotsIcon class="w-5 h-5" />
 	</button>
 	{#if active}
 		<div class="dropdown" role="menu" transition:fade={{ duration: 50 }}>
 			{#if title}
 				<div class="heading">
-					{#if titleIcon}
-						<Icon icon={titleIcon} class="w-4 h-4" />
+					{#if $$slots.titleIcon}
+						<span class="titleIconWrapper">
+							<slot name="titleIcon" />
+						</span>
 					{/if}
 					<p class="title">{title}</p>
 				</div>
@@ -66,5 +66,8 @@
 		@apply absolute flex flex-col overflow-hidden;
 		@apply w-44 mr-8 right-0;
 		@apply rounded-md bg-slate-600;
+	}
+	.titleIconWrapper :global(svg) {
+		@apply w-5 h-5;
 	}
 </style>

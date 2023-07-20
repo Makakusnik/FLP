@@ -1,6 +1,7 @@
 <script lang="ts">
+	import HamburgerIcon from '$lib/assets/icons/HamburgerIcon.svelte';
+	import CancelIcon from '$lib/assets/icons/CancelIcon.svelte';
 	import { dashboardState } from '$lib/stores/dashboard.store';
-	import Icon from '@iconify/svelte';
 	const handleClick = () => {
 		$dashboardState.isMenuOpen = !$dashboardState.isMenuOpen;
 	};
@@ -11,18 +12,16 @@
 		class="hamburger"
 		class:active={$dashboardState.isMenuOpen && !$dashboardState.isMenuOpenTemporary}
 		on:click={handleClick}
-		on:focus
-	>
-		<Icon icon="ci:hamburger-lg" class="h-8 w-8" />
+		on:focus>
+		<HamburgerIcon class="h-8 w-8 text-white" />
 	</button>
 	<p class="ml-4">Menu</p>
 	{#if !$dashboardState.isMenuOpenTemporary}
 		<button
 			class="closing-chevron"
 			on:click={handleClick}
-			class:active={$dashboardState.isMenuOpen}
-		>
-			<Icon icon="iconoir:cancel" class="w-8 h-full" />
+			class:active={$dashboardState.isMenuOpen}>
+			<CancelIcon class="w-8 h-full" />
 		</button>
 	{/if}
 </div>

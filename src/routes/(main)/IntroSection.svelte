@@ -1,4 +1,5 @@
 <script lang="ts">
+	import PictureIcon from '$lib/assets/icons/PictureIcon.svelte';
 	import CtaButton from '$lib/common/buttons/CTAButton.svelte';
 	import GhostButton from '$lib/common/buttons/GhostButton.svelte';
 	import SectionContentWrapper from '$lib/common/containers/main/SectionContentWrapper.svelte';
@@ -24,9 +25,15 @@
 	<div class="flex mt-16 items-center flex-col w-full gap-y-4">
 		<p class="text-neutral-400">Already loved and trusted by product teams</p>
 		<div class="flex gap-x-6">
-			<Client icon="logos:amp-icon">Kim</Client>
-			<Client icon="logos:eta-icon">Peder</Client>
-			<Client icon="logos:nats-icon">Maroš</Client>
+			<Client>
+				<PictureIcon class="text-blue-500" slot="icon" />
+				Kim</Client>
+			<Client>
+				<PictureIcon class="text-green-500" slot="icon" />
+				Peder</Client>
+			<Client>
+				<PictureIcon class="text-rose-500" slot="icon" />
+				Maroš</Client>
 			<Client />
 			<Client />
 		</div>

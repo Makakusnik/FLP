@@ -1,10 +1,10 @@
 <script lang="ts">
+	import ChevronDown from '$lib/assets/icons/ChevronDownIcon.svelte';
+	import Unknown from '$lib/assets/icons/UnknownIcon.svelte';
 	import { dashboardState } from '$lib/stores/dashboard.store';
-	import Icon from '@iconify/svelte';
 	import { slide, type SlideParams, type TransitionConfig } from 'svelte/transition';
 
 	export let active = false;
-	export let icon = 'octicon:graph-16';
 	let hasChildren = $$slots.children;
 
 	$: {
@@ -36,20 +36,25 @@
 		on:click={handleToggle}
 		on:keydown
 		on:keyup
-		on:keypress
-	>
+		on:keypress>
 		<div class="flex items-center justify-center w-12 h-12">
-			<Icon {icon} class="flex w-12 h-5" />
+			{#if $$slots.icon}
+				<span class="flex justify-center items-center w-12 h-5">
+					<slot name="icon" />
+				</span>
+			{:else}
+				<Unknown class="flex w-12 h-5" />
+			{/if}
 		</div>
 		<div class="flex flex-col w-full ml-4">
 			<div class="title">
 				<div class="flex w-full">
 					<slot />
 					{#if hasChildren}
-						<Icon
-							icon="tabler:chevron-down"
-							class="w-5 h-5 ml-auto mr-2 transition-transform {active ? 'rotate-0' : 'rotate-90'}"
-						/>
+						<ChevronDown
+							class="w-5 h-5 ml-auto mr-2 transition-transform {active
+								? 'rotate-0'
+								: 'rotate-90'}" />
 					{/if}
 				</div>
 			</div>

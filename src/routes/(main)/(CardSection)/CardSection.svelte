@@ -5,6 +5,9 @@
 	import Card2 from './Card2.svelte';
 	import Card3 from './Card3.svelte';
 	import SectionHeadingBig from '$lib/common/heading/SectionHeadingBig.svelte';
+	import DiamondIcon from '$lib/assets/icons/DiamondIcon.svelte';
+	import FastClockIcon from '$lib/assets/icons/FastClockIcon.svelte';
+	import UpdateIcon from '$lib/assets/icons/UpdateIcon.svelte';
 
 	let activeCard = 0;
 </script>
@@ -17,28 +20,29 @@
 		<div class="flex gap-x-6 w-full h-full mt-12">
 			<Card
 				title="High quality product"
-				icon="material-symbols:diamond"
 				isActive={activeCard === 0}
 				on:click={() => {
 					activeCard = 0;
-				}}
-			/>
+				}}>
+				<DiamondIcon slot="icon" />
+			</Card>
+
 			<Card
 				title="Fast delivery"
-				icon="mdi:clock-fast"
 				isActive={activeCard === 1}
 				on:click={() => {
 					activeCard = 1;
-				}}
-			/>
+				}}>
+				<FastClockIcon slot="icon" />
+			</Card>
 			<Card
 				title="Up-to-date technologies"
-				icon="dashicons:update"
 				isActive={activeCard === 2}
 				on:click={() => {
 					activeCard = 2;
-				}}
-			/>
+				}}>
+				<UpdateIcon slot="icon" />
+			</Card>
 		</div>
 		<div class="gradient window">
 			{#if activeCard === 0}
@@ -49,8 +53,7 @@
 				<Card3 />
 			{/if}
 		</div>
-	</div></SectionContentWrapper
->
+	</div></SectionContentWrapper>
 
 <style lang="postcss">
 	.window {
