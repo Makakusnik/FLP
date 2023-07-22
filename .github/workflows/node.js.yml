@@ -64,3 +64,5 @@ jobs:
         with:
           push: true
           tags: marekusnik/githubax:latest
+          secrets: |
+            GIT_AUTH_TOKEN=${{ secrets.GIT_AUTH_TOKEN }}
