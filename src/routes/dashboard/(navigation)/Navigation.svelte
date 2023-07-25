@@ -4,7 +4,7 @@
 	import ChevronDown from '$lib/assets/icons/ChevronDownIcon.svelte';
 </script>
 
-<div class="w-full h-12 bg-indigo-950/60 grid grid-cols-3">
+<div class="w-full h-12 bg-indigo-950/60 grid grid-cols-3 z-10">
 	<TopBar />
 	<div class="flex items-center justify-center">
 		<a href="/dashboard">Logo</a>

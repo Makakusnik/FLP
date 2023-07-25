@@ -13,10 +13,10 @@
 	import AdminNavigation from './(navigation)/Navigation.svelte';
 </script>
 
-<div class="flex flex-col text-white w-full items-center">
+<div class="flex flex-col text-white w-full items-center isolate z-50">
 	<AdminNavigation />
-	<div class="w-full h-full">
-		<Sidebar>
+	<div class="w-full h-full isolate">
+		<Sidebar class="z-10">
 			<SidebarParent>
 				<House slot="icon" />
 				Dashboard

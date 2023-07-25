@@ -33,15 +33,15 @@
 
 	.hamburger-container {
 		@apply flex w-12 items-center justify-start overflow-hidden;
-		transition: width 200ms ease-in-out;
+		transition: width 200ms ease-in-out, background-color 200ms ease-in-out;
 	}
 
 	.hamburger-container.active {
-		@apply w-64;
+		@apply w-64 bg-indigo-950;
 	}
 
 	.hamburger.active {
-		@apply text-indigo-400;
+		@apply text-indigo-400 bg-indigo-950;
 	}
 
 	.closing-chevron {
