@@ -1,0 +1,8 @@
+.vscode
+
+node_modules
+
+.git.gitattributes
+
+README.md
+Dockerfile
