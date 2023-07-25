@@ -8,7 +8,7 @@ on:
     branches: ['feature-*', 'bugfix-*', 'devops-*']
 
 jobs:
-  build:
+  setup:
     runs-on: self-hosted
 
     strategy:
@@ -45,6 +45,8 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+      - name: Build app
+        run: pnpm run build
   # docker:
   #   runs-on: ubuntu-latest
   #   steps:
