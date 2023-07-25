@@ -1,6 +1,7 @@
 <script lang="ts">
+	import HamburgerIcon from '$lib/assets/icons/HamburgerIcon.svelte';
+	import CancelIcon from '$lib/assets/icons/CancelIcon.svelte';
 	import { dashboardState } from '$lib/stores/dashboard.store';
-	import Icon from '@iconify/svelte';
 	const handleClick = () => {
 		$dashboardState.isMenuOpen = !$dashboardState.isMenuOpen;
 	};
@@ -11,18 +12,16 @@
 		class="hamburger"
 		class:active={$dashboardState.isMenuOpen && !$dashboardState.isMenuOpenTemporary}
 		on:click={handleClick}
-		on:focus
-	>
-		<Icon icon="ci:hamburger-lg" class="h-8 w-8" />
+		on:focus>
+		<HamburgerIcon class="h-8 w-8 text-white" />
 	</button>
 	<p class="ml-4">Menu</p>
 	{#if !$dashboardState.isMenuOpenTemporary}
 		<button
 			class="closing-chevron"
 			on:click={handleClick}
-			class:active={$dashboardState.isMenuOpen}
-		>
-			<Icon icon="iconoir:cancel" class="w-8 h-full" />
+			class:active={$dashboardState.isMenuOpen}>
+			<CancelIcon class="w-8 h-full" />
 		</button>
 	{/if}
 </div>
@@ -34,15 +33,15 @@
 
 	.hamburger-container {
 		@apply flex w-12 items-center justify-start overflow-hidden;
-		transition: width 200ms ease-in-out;
+		transition: width 200ms ease-in-out, background-color 200ms ease-in-out;
 	}
 
 	.hamburger-container.active {
-		@apply w-64;
+		@apply w-64 bg-indigo-950;
 	}
 
 	.hamburger.active {
-		@apply text-indigo-400;
+		@apply text-indigo-400 bg-indigo-950;
 	}
 
 	.closing-chevron {

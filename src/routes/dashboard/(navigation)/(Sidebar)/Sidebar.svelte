@@ -18,12 +18,11 @@
 </script>
 
 <nav
-	class="sidebarContainer"
+	class="sidebarContainer {$$props.class}"
 	on:mouseenter={handleHover}
 	class:active={$dashboardState.isMenuOpen}
 	on:mouseleave={handleBlur}
-	on:focus
->
+	on:focus>
 	<ul>
 		<slot />
 	</ul>
@@ -31,7 +30,7 @@
 
 <style lang="postcss">
 	.sidebarContainer {
-		@apply w-12 absolute h-screen bg-slate-800 overflow-hidden;
+		@apply hidden md:flex md:w-12 absolute h-screen bg-slate-800 overflow-hidden;
 		transition: width 200ms ease-in-out;
 	}
 

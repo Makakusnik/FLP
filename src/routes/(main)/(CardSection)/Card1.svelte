@@ -6,8 +6,8 @@
 
 <div
 	class="hack w-full h-full"
-	in:fly|global={{ x: 300, duration: 500, delay: 650 }}
-	out:fly|global={{ x: -800, duration: 600 }}
+	in:fly|local={{ x: 300, duration: 500, delay: 650 }}
+	out:fly|local={{ x: -800, duration: 600 }}
 >
 	<div class="headlines">
 		<p class:active={activeSection === 0}>Top-notch documentation</p>

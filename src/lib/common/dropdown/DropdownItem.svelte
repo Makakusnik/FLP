@@ -1,11 +1,12 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
-	export let icon = '';
+	import Unknown from '$lib/assets/icons/UnknownIcon.svelte';
 </script>
 
 <button role="menuitem" class="item" on:click>
 	<span class="icon">
-		<Icon {icon} />
+		<slot name="icon">
+			<Unknown class="w-4 h-4 " />
+		</slot>
 	</span>
 	<p class="text-slate-300">
 		<slot default />
@@ -26,7 +27,7 @@
 		@apply text-indigo-400;
 	}
 
-	.icon {
+	.icon :global(svg) {
 		@apply w-4 h-4 transition-colors;
 	}
 </style>

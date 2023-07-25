@@ -1,19 +1,37 @@
 <script lang="ts">
+	import BinIcon from '$lib/assets/icons/BinIcon.svelte';
+	import DotsIcon from '$lib/assets/icons/DotsIcon.svelte';
+	import ListIcon from '$lib/assets/icons/ListIcon.svelte';
+	import PencilIcon from '$lib/assets/icons/PencilIcon.svelte';
+	import SettingsIcon from '$lib/assets/icons/SettingsIcon.svelte';
 	import Dropdown from '../../dropdown/Dropdown.svelte';
 	import DropdownItem from '../../dropdown/DropdownItem.svelte';
 	import WidgetContainer from '../WidgetContainer.svelte';
 	import CurrencyItem from './CurrencyItem.svelte';
-	import * as FlagIcons from 'svelte-flag-icons';
+	import type { Currency } from './CurrencyWidgetTypes';
 
-	// Base code, target code
+	export let data: Currency[];
 </script>
 
-<WidgetContainer title="Exchange rate" className="col-span-3 row-span-1">
-	<Dropdown slot="dropdown" title="Settings" titleIcon="material-symbols:settings">
-		<DropdownItem icon="pepicons-pop:dots-y">I dont know</DropdownItem>
-		<DropdownItem icon="material-symbols:edit">Edit</DropdownItem>
-		<DropdownItem icon="fe:list-bullet">Details</DropdownItem>
-		<DropdownItem icon="pajamas:remove">Remove</DropdownItem>
+<WidgetContainer title="Exchange rate" className="col-span-12 row-span-1 isolate">
+	<Dropdown slot="dropdown" title="Settings">
+		<SettingsIcon slot="titleIcon" />
+		<DropdownItem>
+			<DotsIcon slot="icon" />
+			I dont know
+		</DropdownItem>
+		<DropdownItem>
+			<PencilIcon slot="icon" />
+			Edit
+		</DropdownItem>
+		<DropdownItem>
+			<ListIcon slot="icon" />
+			Details
+		</DropdownItem>
+		<DropdownItem>
+			<BinIcon slot="icon" />
+			Remove
+		</DropdownItem>
 	</Dropdown>
 	<div class="head">
 		<span>currency</span>
@@ -22,87 +40,15 @@
 		<span class="center">24h</span>
 	</div>
 	<hr class="main" />
-	<div class="body">
-		<CurrencyItem
-			flagComponent={FlagIcons.Dk}
-			dayChange={{ value: 4, positive: false }}
-			currencyName="Dk"
-			value={12.4}
-			chartData={{ something: 'smth' }}
-		/>
-		<hr />
-		<CurrencyItem
-			flagComponent={FlagIcons.Us}
-			dayChange={{ value: 0, positive: true }}
-			currencyName="USD"
-			value={1}
-			chartData={{ something: 'smth' }}
-		/>
-		<hr />
-		<CurrencyItem
-			flagComponent={FlagIcons.Eu}
-			dayChange={{ value: 65, positive: true }}
-			currencyName="EUR"
-			value={12.4}
-			chartData={{ something: 'smth' }}
-		/>
-		<hr />
-		<CurrencyItem
-			flagComponent={FlagIcons.Cz}
-			dayChange={{ value: 125, positive: false }}
-			currencyName="CZK"
-			value={12.4}
-			chartData={{ something: 'smth' }}
-		/>
-		<hr />
-		<CurrencyItem
-			flagComponent={FlagIcons.Eu}
-			dayChange={{ value: 65, positive: true }}
-			currencyName="EUR"
-			value={12.4}
-			chartData={{ something: 'smth' }}
-		/>
-		<hr />
-		<CurrencyItem
-			flagComponent={FlagIcons.Cz}
-			dayChange={{ value: 125, positive: false }}
-			currencyName="CZK"
-			value={12.4}
-			chartData={{ something: 'smth' }}
-		/>
-		<hr />
-		<CurrencyItem
-			flagComponent={FlagIcons.Eu}
-			dayChange={{ value: 65, positive: true }}
-			currencyName="EUR"
-			value={12.4}
-			chartData={{ something: 'smth' }}
-		/>
-		<hr />
-		<CurrencyItem
-			flagComponent={FlagIcons.Cz}
-			dayChange={{ value: 125, positive: false }}
-			currencyName="CZK"
-			value={12.4}
-			chartData={{ something: 'smth' }}
-		/>
-		<hr />
-		<CurrencyItem
-			flagComponent={FlagIcons.Cz}
-			dayChange={{ value: 125, positive: false }}
-			currencyName="CZK"
-			value={12.4}
-			chartData={{ something: 'smth' }}
-		/>
-		<hr />
-		<CurrencyItem
-			flagComponent={FlagIcons.Cz}
-			dayChange={{ value: 125, positive: false }}
-			currencyName="CZK"
-			value={12.4}
-			chartData={{ something: 'smth' }}
-		/>
-		<hr />
+	<div class="body -z-10">
+		{#if data}
+			{#each data as { dailyValues, flagComponent, name }, i}
+				<CurrencyItem {name} {dailyValues} {flagComponent} />
+				{#if i !== data.length - 1}
+					<hr />
+				{/if}
+			{/each}
+		{/if}
 	</div>
 </WidgetContainer>
 

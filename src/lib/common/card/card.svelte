@@ -1,13 +1,16 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
-	export let icon = 'carbon:unknown-filled';
+	import Unknown from '$lib/assets/icons/UnknownIcon.svelte';
 	export let title = 'unknown';
 	export let isActive = false;
 </script>
 
 <div on:click on:keypress tabindex="0" class="wrapper" role="button" class:active={isActive}>
 	<span class="flex gap-x-2">
-		<Icon {icon} class="text-purple-200 h-6 w-6" />
+		<span class="text-purple-200 h-6 w-6">
+			<slot name="icon">
+				<Unknown />
+			</slot>
+		</span>
 		<p class="font-semibold text-purple-200">{title}</p>
 	</span>
 	<p class="text-purple-200">
