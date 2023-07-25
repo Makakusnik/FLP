@@ -5,13 +5,11 @@ name: Node.js CI
 
 on:
   push:
-    branches: ['devops-test']
-  pull_request:
-    branches: ['devops-test']
+    branches: 'devops-*'
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     strategy:
       matrix:
