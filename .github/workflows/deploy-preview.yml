@@ -1,7 +1,7 @@
 name: Deploy preview.
 on:
   pull_request:
-    branches: ['staging']
+    branches: ['staging', deploy-*]
 
 jobs:
   setup:
@@ -9,7 +9,7 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        node-version: 18.x
+        node-version: [18.x]
 
     steps:
       - name: Checkout repo.
