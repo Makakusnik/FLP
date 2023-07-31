@@ -5,7 +5,7 @@ on:
 
 jobs:
   setup:
-    name: Setup project
+    name: Setup project.
     runs-on: self-hosted
     strategy:
       matrix:
