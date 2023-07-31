@@ -1,7 +1,7 @@
 name: Deploy preview.
 on:
   pull_request:
-    branches: ['staging', deploy-*]
+    branches: ['staging', devops-*]
 
 jobs:
   setup:
