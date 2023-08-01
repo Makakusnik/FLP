@@ -17,8 +17,8 @@
 		"test:unit": "vitest",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"staging": "sudo rm -rf /var/www/companyTest.marekus.eu/* && sudo cp -R ./dist/* /var/www/companyTest.marekus.eu",
-		"deploy": "sudo rm -rf /var/www/company.marekus.eu/* && sudo cp -R ./dist/* /var/www/company.marekus.eu"
+		"staging": "sudo rm -rf /var/www/companyTest.marekus.eu/* && sudo cp -R ./build/* /var/www/companyTest.marekus.eu",
+		"deploy": "sudo rm -rf /var/www/company.marekus.eu/* && sudo cp -R ./build/* /var/www/company.marekus.eu"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^17.6.7",
