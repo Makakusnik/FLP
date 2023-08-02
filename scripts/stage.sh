@@ -30,7 +30,7 @@ then
 else
   echo "${BRed}WARNING:${CO} ${Red}Missing ${URed}.env${Red} file.${CO}\n" >&2
   echo "Create ${UCyan}.env${CO} file." >&2
-  echo "You can do so by copying ${UCyan}.env.exmaple${CO} to ${UCyan}.env${CO} and putting in proper values.\n" >&2
+  echo "You can do so by copying ${UCyan}.env.example${CO} to ${UCyan}.env${CO} and putting in proper values.\n" >&2
   exit 1;
 fi
 
