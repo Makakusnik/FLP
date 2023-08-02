@@ -51,9 +51,13 @@ jobs:
     runs-on: self-hosted
     needs: setup
     steps:
-      - name: Deploy preview
-        if: ${{ github.ref == 'refs/heads/staging' }}
+      - if: ${{ github.ref == 'refs/heads/staging' }}
+        env:
+          PUBLIC_STAGING_URL: companytest.marekus.eu
+        name: Deploy preview
         run: pnpm run staging
-      - name: Deploy production
-        if: ${{ github.ref == 'refs/heads/main' }}
+      - if: ${{ github.ref == 'refs/heads/main' }}
+        env:
+          PUBLIC_DEPLOY_URL: company.marekus.eu
+        name: Deploy production
         run: pnpm run deploy
