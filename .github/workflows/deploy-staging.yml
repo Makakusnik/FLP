@@ -1,7 +1,7 @@
-name: Deploy preview.
+name: Deploy current version to staging/production environment.
 on:
   push:
-    branches: ['staging', devops-*]
+    branches: [staging, main]
 
 jobs:
   setup:
@@ -52,4 +52,8 @@ jobs:
     needs: setup
     steps:
       - name: Deploy preview
-        run: pnpm run build
+        if: ${{ github.ref == 'refs/heads/staging' }}
+        run: pnpm run staging
+      - name: Deploy production
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: pnpm run deploy
