@@ -1,6 +1,7 @@
 {
 	"name": "landingpage",
 	"version": "0.0.1",
+	"type": "module",
 	"private": true,
 	"release": {
 		"branches": [
@@ -17,8 +18,8 @@
 		"test:unit": "vitest",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"staging": "sudo rm -rf /var/www/companyTest.marekus.eu/* && sudo cp -R ./build/* /var/www/companyTest.marekus.eu",
-		"deploy": "sudo rm -rf /var/www/company.marekus.eu/* && sudo cp -R ./build/* /var/www/company.marekus.eu"
+		"staging": "sh ./scripts/stage.sh",
+		"deploy": "sh ./scripts/deploy.sh"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^17.6.7",
@@ -47,7 +48,6 @@
 		"vite": "^4.3.0",
 		"vitest": "^0.25.3"
 	},
-	"type": "module",
 	"dependencies": {
 		"chart.js": "^4.3.0",
 		"svelte-chartjs": "^3.1.2"
