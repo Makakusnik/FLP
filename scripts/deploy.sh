@@ -5,17 +5,22 @@ WEB_PATH='/var/www'
 DEPLOY_URL=''
 DEPLOY_PATH=''
 
-die() { echo "$*" >&2; exit 2; }  
-
+die() { echo "$*" >&2; exit 2; }
+killIfFail() { 
+  if [ $1 -eq 1 ];
+  then 
+    exit 1;
+  fi
+}  
 needs_arg() { if [ -z "$OPTARG" ]; then die "No arg for --$OPT option"; fi; }
 
 get_result()
 {
-  if [ $? -eq "0" ]
+  if [ $1 -eq "0" ]
   then
-    echo "${BGreen}Success${CO}"
+    echo "${BGreen}Success${CO}\n"
   else
-    echo "${BRed}Failed${CO}"
+    echo "${BRed}Failed${CO}\n"
   fi
 }
 
@@ -67,18 +72,25 @@ if [ ! -d $WEB_PATH ]
 then
   echo "${Cyan}Creating directory: ${UWhite}${WEB_PATH}${CO}"
   sudo mkdir /var/www
-  echo "$(get_result)\n"
+  RESULT=$?
+  get_result $RESULT
+  killIfFail $RESULT
 fi
 
 # DEPLOY PATH CHECK 
 
 if [ ! -d $DEPLOY_PATH ]
 then
-  sudo mkdir $DEPLOY_PATH
-  echo "${Cyan}Creating directory: ${UWhite}${DEPLOY_PATH}${CO} - $(get_result)\n"
+  mkdir $DEPLOY_PATH
+  RESULT=$?
+  echo "${Cyan}Creating directory: ${UWhite}${DEPLOY_PATH}${CO}"
+  get_result $RESULT
+  killIfFail $RESULT
 else
   sudo rm -rf $DEPLOY_PATH/*
+  RESULT=$?
   echo "${Cyan}Erasing directory: ${UWhite}${DEPLOY_PATH}${CO} - $(get_result)\n"
+  get_result $RESULT
 fi
 
 # BUILDING APPLICATION 
@@ -90,4 +102,7 @@ pnpm run build
 # COPYING BUILD FILES
 
 sudo cp -R ./build/* ${DEPLOY_PATH}
-echo "\n${Cyan}Copying build files to: ${UWhite}${DEPLOY_PATH}${CO} - $(get_result)\n"
+RESULT=$?
+echo "\n${Cyan}Copying build files to: ${UWhite}${DEPLOY_PATH}${CO}"
+get_result $RESULT
+killIfFail $RESULT
