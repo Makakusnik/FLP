@@ -47,15 +47,14 @@ else
     DEPLOY_URL=`cat .env | grep DEPLOY_URL | sed 's/^.*=//g'`
     if [ -z $DEPLOY_URL ]
     then
-      echo "${BRed}WARNING:${CO} ${Red}Missing environment variable${CO}\n" >&2
-      echo "You need to define ${UCyan}PUBLIC_DEPLOY_URL${CO} variable in .env file.\n" >&2
+      echo "${BRed}WARNING:${CO} ${Red}Missing environment variable${CO}\n"
+      echo "You need to define ${UCyan}PUBLIC_DEPLOY_URL${CO} variable in .env file.\n"
       exit 1;
     fi
     echo "${Cyan}Using variables from environment file${CO} \n"
   else
-    echo "${BRed}WARNING:${CO} ${Red}Missing ${URed}.env${Red} file.${CO}\n" >&2
-    echo "Create ${UCyan}.env${CO} file." >&2
-    echo "You can do so by copying ${UCyan}.env.example${CO} to ${UCyan}.env${CO} and putting in proper values.\n" >&2
+    echo "${BRed}WARNING:${CO} ${Red}Missing ${URed}.env${Red} file.${CO}\n"
+    echo "Create ${UCyan}.env${CO} file from ${UCyan}.env.exmaple${CO} or you can supply ${BCyan}--deploy-url${CO} option.\n"
     exit 1;
   fi
 fi
@@ -73,7 +72,6 @@ fi
 
 # DEPLOY PATH CHECK 
 
-  echo $DEPLOY_PATH
 if [ ! -d $DEPLOY_PATH ]
 then
   sudo mkdir $DEPLOY_PATH
