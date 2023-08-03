@@ -53,7 +53,7 @@ jobs:
     steps:
       - if: ${{ github.ref == 'refs/heads/staging' }}
         name: Deploy preview
-        run: pnpm run staging --staging-url=companyTest.marekus.eu
+        run: pnpm run staging --staging-url=companytest.marekus.eu
       - if: ${{ github.ref == 'refs/heads/main' }}
         name: Deploy production
         run: pnpm run deploy --deploy-url=company.marekus.eu
