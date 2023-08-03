@@ -102,4 +102,4 @@
 	);
 </script>
 
-<Line {data} {options} />
+<Line class="h-8" {data} {options} />
