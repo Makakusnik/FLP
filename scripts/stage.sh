@@ -89,7 +89,7 @@ then
 else
   sudo rm -rf $STAGING_PATH/*
   RESULT=$?
-  echo "${Cyan}Erasing directory: ${UWhite}${STAGING_PATH}${CO} - $(get_result)\n"
+  echo "${Cyan}Erasing directory: ${UWhite}${STAGING_PATH}${CO}"
   get_result $RESULT
 fi
 
