@@ -71,7 +71,7 @@ DEPLOY_PATH=$WEB_PATH/$DEPLOY_URL
 if [ ! -d $WEB_PATH ]
 then
   echo "${Cyan}Creating directory: ${UWhite}${WEB_PATH}${CO}"
-  sudo mkdir /var/www
+  sudo -u github mkdir /var/www
   RESULT=$?
   get_result $RESULT
   killIfFail $RESULT
@@ -87,7 +87,7 @@ then
   get_result $RESULT
   killIfFail $RESULT
 else
-  sudo rm -rf $DEPLOY_PATH/*
+  sudo -u github rm -rf $DEPLOY_PATH/*
   RESULT=$?
   echo "${Cyan}Erasing directory: ${UWhite}${DEPLOY_PATH}${CO} - $(get_result)\n"
   get_result $RESULT
@@ -101,7 +101,7 @@ pnpm run build
 
 # COPYING BUILD FILES
 
-sudo cp -R ./build/* ${DEPLOY_PATH}
+sudo -u github cp -R ./build/* ${DEPLOY_PATH}
 RESULT=$?
 echo "\n${Cyan}Copying build files to: ${UWhite}${DEPLOY_PATH}${CO}"
 get_result $RESULT
