@@ -71,7 +71,7 @@ STAGING_PATH=$WEB_PATH/$STAGING_URL
 if [ ! -d $WEB_PATH ]
 then
   echo "${Cyan}Creating directory: ${UWhite}${WEB_PATH}${CO}"
-  sudo mkdir /var/www
+  mkdir /var/www
   RESULT=$?
   get_result $RESULT
   killIfFail $RESULT
@@ -87,7 +87,7 @@ then
   get_result $RESULT
   killIfFail $RESULT
 else
-  sudo rm -rf $STAGING_PATH/*
+  rm -rf $STAGING_PATH/*
   RESULT=$?
   echo "${Cyan}Erasing directory: ${UWhite}${STAGING_PATH}${CO}"
   get_result $RESULT
@@ -101,7 +101,7 @@ pnpm run build
 
 # COPYING BUILD FILES
 
-sudo cp -R ./build/* ${STAGING_PATH}
+cp -R ./build/* ${STAGING_PATH}
 RESULT=$?
 echo "\n${Cyan}Copying build files to: ${UWhite}${STAGING_PATH}${CO}"
 get_result $RESULT
