@@ -13,7 +13,7 @@
 	export let data: Currency[];
 </script>
 
-<WidgetContainer title="Exchange rate" className="col-span-2 row-span-1 isolate">
+<WidgetContainer title="Exchange rate" className="col-span-1 row-span-1 isolate">
 	<Dropdown slot="dropdown" title="Settings">
 		<SettingsIcon slot="titleIcon" />
 		<DropdownItem>
@@ -64,8 +64,9 @@
 		@apply justify-center;
 	}
 	.head {
-		@apply grid grid-cols-4 text-xs font-medium text-slate-300;
+		@apply grid text-xs font-medium text-slate-300;
 		@apply mb-1;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1fr) minmax(0, 1fr);
 	}
 	.head span {
 		@apply flex;
