@@ -66,7 +66,7 @@
 	.head {
 		@apply grid text-xs font-medium text-slate-300;
 		@apply mb-1;
-		grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1fr) minmax(0, 1fr);
+		grid-template-columns: minmax(0, 1fr) minmax(0, 0.6fr) minmax(0, 1fr) minmax(0, 1fr);
 	}
 	.head span {
 		@apply flex;

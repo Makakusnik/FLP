@@ -55,9 +55,6 @@
 </div>
 
 <style lang="postcss">
-	.hidden {
-		@apply opacity-0;
-	}
 	.chart {
 		@apply flex px-2 w-20 items-center mx-auto;
 	}
