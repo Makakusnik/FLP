@@ -8,7 +8,7 @@
 	import DropdownItem from '../../dropdown/DropdownItem.svelte';
 	import WidgetContainer from '../WidgetContainer.svelte';
 	import CurrencyItem from './CurrencyItem.svelte';
-	import type { Currency } from './CurrencyWidgetTypes';
+	import type { Currency } from './types';
 
 	export let data: Currency[];
 </script>

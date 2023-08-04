@@ -1,4 +1,4 @@
-import type { ServerCurrencyData } from '$lib/common/widgets/CurrencyWidget/CurrencyWidgetTypes';
+import type { ServerCurrencyData } from '$lib/common/widgets/CurrencyWidget/types';
 import { codePairs, twoLetterCodes } from '$lib/constants/flags';
 
 function generateRandomNumbersArray(number: number) {
