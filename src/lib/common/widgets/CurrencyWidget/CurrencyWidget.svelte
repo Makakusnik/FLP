@@ -13,7 +13,7 @@
 	export let data: Currency[];
 </script>
 
-<WidgetContainer title="Exchange rate" className="col-span-12 row-span-1 isolate">
+<WidgetContainer title="Exchange rate" className="col-span-2 row-span-1 isolate">
 	<Dropdown slot="dropdown" title="Settings">
 		<SettingsIcon slot="titleIcon" />
 		<DropdownItem>

@@ -14,7 +14,6 @@
 		Filler
 	} from 'chart.js';
 
-	export let onComplete: () => void;
 	type ChartLineType = ChartData<'line', (number | Point)[], number | string>;
 
 	export let currencyData: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
@@ -39,10 +38,7 @@
 				display: false
 			}
 		},
-		responsive: true,
-		animation: {
-			onComplete: onComplete
-		}
+		responsive: true
 	};
 	const data: ChartLineType = {
 		labels: [0, 0, 0, 0, 0, 0, 0, 0, 0],

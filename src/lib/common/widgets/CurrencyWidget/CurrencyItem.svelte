@@ -1,12 +1,13 @@
 <script lang="ts">
+	import { getFluctuationType } from './utils';
+
 	import CaretDown from '$lib/assets/icons/CaretDownIcon.svelte';
 	import CurrencyChart from '$lib/common/charts/CurrencyChart.svelte';
 	import type { CurrencyFluctuation } from '$lib/types/currency';
 	import type { SvelteComponent } from 'svelte';
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	type C = $$Generic<typeof SvelteComponent<any, any>>;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 	export let flagComponent: C extends typeof SvelteComponent<infer P extends Record<string, any>>
 		? P
 		: never;
@@ -14,27 +15,21 @@
 	export let name: string;
 	export let dailyValues: number[];
 
-	let isRendered = false;
 	const originalValue = dailyValues[0];
 	const currentValue = dailyValues[dailyValues.length - 1];
 
 	const change = Number((originalValue - currentValue).toFixed(2));
 
-	let fluctuation: CurrencyFluctuation;
-	if (change > 0.0) {
-		fluctuation = 'decrease';
-	} else if (change < 0.0) {
-		fluctuation = 'increase';
-	} else {
-		fluctuation = 'no change';
-	}
+	const fluctuation: CurrencyFluctuation = getFluctuationType(change);
+
 	let changePercentage = (Math.abs(change) / originalValue).toFixed(2);
+
 	if (changePercentage === '0' && fluctuation !== 'no change') {
 		changePercentage = '0.01';
 	}
 </script>
 
-<div class="item" class:hidden={!isRendered}>
+<div class="item">
 	<span class="currency"
 		>{#if flagComponent}
 			<svelte:component this={flagComponent} class="w-6 h-6" />
@@ -42,12 +37,7 @@
 		<p>{name}</p></span>
 	<span class="flex items-center justify-center h-full w-full"
 		><p class="w-12">{currentValue}</p></span>
-	<span class="chart"
-		><CurrencyChart
-			onComplete={() => {
-				isRendered = true;
-			}}
-			currencyData={dailyValues} /></span>
+	<span class="chart"><CurrencyChart currencyData={dailyValues} /></span>
 	<span
 		class="changeWrapper"
 		class:positive={fluctuation === 'increase'}
