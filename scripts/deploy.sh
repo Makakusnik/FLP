@@ -5,7 +5,7 @@ WEB_PATH='/var/www'
 DEPLOY_URL=''
 DEPLOY_PATH=''
 
-die() { echo "$*" >&2; exit 2; }
+die() { echo "$*"; exit 2; }
 killIfFail() { 
   if [ $1 -eq 1 ];
   then 
@@ -89,7 +89,7 @@ then
 else
   rm -rf $DEPLOY_PATH/*
   RESULT=$?
-  echo "${Cyan}Erasing directory: ${UWhite}${DEPLOY_PATH}${CO} - $(get_result)\n"
+  echo "${Cyan}Erasing directory: ${UWhite}${DEPLOY_PATH}${CO}"
   get_result $RESULT
 fi
 
