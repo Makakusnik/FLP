@@ -7,5 +7,5 @@
 	<div class="flex flex-col h-full items-center">
 		<SectionHeadingBig>DashBoard</SectionHeadingBig>
 	</div>
-	<a href="/dashboard">Dashboard link bitch</a>
+	<a href="/dashboard">Dashboard temporary link </a>
 </SectionContentWrapper>

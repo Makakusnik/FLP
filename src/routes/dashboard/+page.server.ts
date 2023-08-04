@@ -1,7 +1,7 @@
 import type { ServerCurrencyData } from '$lib/common/widgets/CurrencyWidget/CurrencyWidgetTypes';
 import { codePairs, twoLetterCodes } from '$lib/constants/flags';
 
-function generateRandomNumbersArray(number: number, str: string) {
+function generateRandomNumbersArray(number: number) {
 	const length = 9;
 	const randomNumbersArray = [];
 
@@ -18,10 +18,6 @@ function generateRandomNumbersArray(number: number, str: string) {
 			continue;
 		}
 
-		if (str === 'Cz') {
-			console.log('\n', str);
-			console.log(numberToRandomize);
-		}
 		randomNumbersArray.push(Number(numberToRandomize.toFixed(2)));
 	}
 
@@ -33,8 +29,7 @@ export const load = () => {
 	for (let i = 0; i < 9; i++) {
 		const flagCode = twoLetterCodes[i];
 		const generatedData = generateRandomNumbersArray(
-			[85.66, 89.69, 9.95, 0.89, 1, 21.4, 0.78, 0.86, 3.98][i],
-			flagCode
+			[85.66, 89.69, 9.95, 0.89, 1, 21.4, 0.78, 0.86, 3.98][i]
 		);
 		const currencyCode = codePairs[flagCode];
 		currencyData.push({

@@ -23,7 +23,7 @@
 	class:active={$dashboardState.isMenuOpen}
 	on:mouseleave={handleBlur}
 	on:focus>
-	<ul>
+	<ul class="w-full">
 		<slot />
 	</ul>
 </nav>
