@@ -1,23 +1,16 @@
-import type { twoLetterCodes } from '$lib/constants/flags';
-import type { Af, Al, No, Eu, Us, Cz, Gb, Ch, Pl } from 'svelte-flag-icons';
-
-type FlagIconTypes =
-	| typeof Af
-	| typeof Al
-	| typeof No
-	| typeof Eu
-	| typeof Us
-	| typeof Cz
-	| typeof Gb
-	| typeof Ch
-	| typeof Pl;
-
-export type Currency = {
-	name: string;
-	flagComponent: FlagIconTypes;
-	dailyValues: number[];
+export type TodoLabel = {
+	color: string;
+	textColor: string;
+	text: string;
 };
 
-export type ServerCurrencyData = Omit<Currency, 'flagComponent'> & {
-	flagComponent: (typeof twoLetterCodes)[number];
+export type TodoItem = {
+	title: string;
+	subtitle: string;
+	labels: TodoLabel[];
+};
+
+export type TodoData = {
+	title: string;
+	children: TodoItem[];
 };
