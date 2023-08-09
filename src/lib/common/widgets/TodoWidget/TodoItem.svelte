@@ -5,7 +5,7 @@
 	import { draw, fade, fly } from 'svelte/transition';
 	import { todoState } from '$lib/stores/widgets stores/todo.store';
 	import type { TodoLabel } from './types';
-	import Label from '$lib/common/misc/labels/Label.svelte';
+	import TodoLabels from './TodoLabels.svelte';
 
 	export let title = 'Unknown';
 	export let subtitle = 'Unknown';
@@ -35,44 +35,33 @@
 	let handleLabelClick = () => {
 		$todoState.areLabelsExpanded = !$todoState.areLabelsExpanded;
 	};
+
+	let handleRemoveClick = () => {
+		shouldClose = !shouldClose;
+		removeItem();
+	};
+
+	let handleButtonMouseEnter = () => (isHovering = true);
+	let handleButtonMouseLeave = () => (isHovering = false);
 </script>
 
 {#if !isClosed}
 	<li class="item" out:fly={{ x: 100 }}>
 		{#if labels.length > 0}
-			<button
-				class="flex flex-wrap gap-y-1 gap-x-1 w-fit max-w-[12rem] h-full"
-				on:click={handleLabelClick}>
-				{#each labels as { text, textColor, color }}
-					<Label {text} {color} {textColor} collapsed={$todoState.areLabelsExpanded} />
-				{/each}
-			</button>
+			<TodoLabels {labels} on:click={handleLabelClick} />
 		{/if}
-		<div class="flex items-center">
+		<div class="check-button-wrapper">
 			<button
-				class="check-button relative"
-				on:click={() => {
-					shouldClose = !shouldClose;
-					removeItem();
-				}}
-				on:mouseenter={() => {
-					console.log('is canceled?', canceled);
-					isHovering = true;
-				}}
-				on:mouseleave={() => {
-					console.log('is canceled?', canceled);
-					isHovering = false;
-				}}>
-				{#if !isHovering}
-					<div class="absolute w-full h-full" out:fade|local={{ duration: 100 }}>
-						{#if !shouldClose}
-							<div class="check-wrapper" />
-						{/if}
-					</div>
+				class="check-button"
+				on:click={handleRemoveClick}
+				on:mouseenter={handleButtonMouseEnter}
+				on:mouseleave={handleButtonMouseLeave}>
+				{#if !isHovering && !shouldClose}
+					<div class="circle" />
 				{/if}
 				{#if shouldClose}
-					<div class="absolute w-full h-full">
-						<svg viewBox="0 0 46 46" class="text-blue-400">
+					<div class="svg-circle-wrapper">
+						<svg viewBox="0 0 46 46">
 							<defs>
 								<path
 									in:draw|local={{ duration: 1500, easing: linear }}
@@ -80,10 +69,7 @@
 									id="circle"
 									stroke="currentcolor"
 									stroke-width="6"
-									d="M 0, 0
-						m 0, 23
-						a 23,23 0 1,0 46,0
-						a 23,23 0 1,0 -46,0" />
+									d="M 0, 0m 0, 23a 23,23 0 1,0 46,0a 23,23 0 1,0 -46,0" />
 								<clipPath id="clip">
 									<use xlink:href="#circle" />
 								</clipPath>
@@ -118,7 +104,7 @@
 
 <style lang="postcss">
 	.item {
-		@apply flex flex-col px-4 h-fit py-2 gap-y-2 bg-neutral-500/5 hover:bg-neutral-100/5 transition-colors cursor-pointer;
+		@apply flex flex-col px-4 h-fit w-[90%] rounded-lg py-3 gap-y-2 bg-neutral-500/5 hover:bg-neutral-100/5 transition-colors cursor-pointer;
 		list-style-type: none;
 	}
 
@@ -132,10 +118,18 @@
 	.subtitle {
 		@apply text-neutral-400 text-xs leading-[1.0] pl-1;
 	}
-	.check-wrapper {
-		@apply flex items-center rounded-full p-0.5 h-full w-full border-[2px] transition;
+	.circle {
+		@apply flex items-center rounded-full p-0.5 h-full w-full border-[2px];
 	}
 	.check-button {
-		@apply flex w-5 h-5 items-center justify-center;
+		@apply flex w-5 h-5 items-center justify-center relative;
+	}
+
+	.check-button-wrapper {
+		@apply flex items-center;
+	}
+
+	.svg-circle-wrapper {
+		@apply absolute inset-0 w-full h-full text-blue-400;
 	}
 </style>

@@ -7,10 +7,8 @@
 	import Dropdown from '$lib/common/dropdown/Dropdown.svelte';
 	import DropdownItem from '$lib/common/dropdown/DropdownItem.svelte';
 	import WidgetContainer from '../WidgetContainer.svelte';
-	import TodoItem from './TodoItem.svelte';
-	import ChevronDownIcon from '$lib/assets/icons/ChevronDownIcon.svelte';
-	import { fly } from 'svelte/transition';
 	import type { TodoData, TodoLabel } from './types';
+	import TodoView from './TodoView.svelte';
 
 	export let data: TodoData[];
 
@@ -54,46 +52,11 @@
 		</DropdownItem>
 	</Dropdown>
 	<div class="flex flex-col justify-between w-full h-full bg-neutral-800 overflow-hidden">
-		<div class="content">
+		<div class="content overflow-y-auto">
 			<div class="h-fit">
-				{#each data as { children, title }}
-					<button
-						class="flex items-center m-2 cursor-pointer w-fit px-2 py-1 rounded-md hover:bg-neutral-100/10 transition-colors"
-						on:click={() => {
-							closedContent = !closedContent;
-						}}>
-						<p class="text-xs mr-2">{list.length - 2} / {list.length}</p>
-						<p>{title}</p>
-						<ChevronDownIcon class="ml-2 transition-transform {closedContent ? 'rotate-90' : ''}" />
-					</button>
-					<div class="overflow-hidden">
-						{#if !closedContent}
-							<div class="flex flex-col gap-y-1" transition:fly={{ y: -150, duration: 500 }}>
-								{#each children as { labels, subtitle, title }}
-									<TodoItem {title} {subtitle} {labels} />
-								{/each}
-							</div>
-						{/if}
-					</div>
+				{#each data as todoData}
+					<TodoView data={todoData} />
 				{/each}
-				<button
-					class="flex items-center m-2 cursor-pointer w-fit px-2 py-1 rounded-md hover:bg-neutral-100/10 transition-colors"
-					on:click={() => {
-						closedContent = !closedContent;
-					}}>
-					<p class="text-xs mr-2">{list.length - 2} / {list.length}</p>
-					<p>Create something</p>
-					<ChevronDownIcon class="ml-2 transition-transform {closedContent ? 'rotate-90' : ''}" />
-				</button>
-				<div class="overflow-hidden">
-					{#if !closedContent}
-						<div class="flex flex-col gap-y-1" transition:fly={{ y: -150, duration: 500 }}>
-							{#each list as item}
-								<TodoItem title={item.title} subtitle={item.subtitle} labels={item.labels} />
-							{/each}
-						</div>
-					{/if}
-				</div>
 			</div>
 		</div>
 		<div class="actions w-full p-2 bg-neutral-100/5">

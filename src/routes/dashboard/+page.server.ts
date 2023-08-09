@@ -52,6 +52,8 @@ const populateTodoData = () => {
 	const todoData: TodoData[] = [];
 	const todoParent1: TodoData = {
 		title: 'Create site',
+		allTasks: 4,
+		completedTasks: 4,
 		children: [
 			{
 				title: 'Create nginx config',
@@ -91,6 +93,8 @@ const populateTodoData = () => {
 
 	const todoParent2: TodoData = {
 		title: 'Fill fridge',
+		allTasks: 4,
+		completedTasks: 0,
 		children: [
 			{
 				title: 'Buy gas',

@@ -12,5 +12,7 @@ export type TodoItem = {
 
 export type TodoData = {
 	title: string;
+	allTasks: number;
+	completedTasks: number;
 	children: TodoItem[];
 };
