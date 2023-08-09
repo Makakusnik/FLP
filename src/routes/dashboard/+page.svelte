@@ -1,16 +1,18 @@
 <script lang="ts">
+	import Check from '$lib/assets/icons/Check.svelte';
 	import Dropdown from '$lib/common/dropdown/Dropdown.svelte';
 	import DropdownItem from '$lib/common/dropdown/DropdownItem.svelte';
 	import CurrencyWidget from '$lib/common/widgets/CurrencyWidget/CurrencyWidget.svelte';
+	import TodoWidget from '$lib/common/widgets/TodoWidget/TodoWidget.svelte';
 	import WidgetContainer from '$lib/common/widgets/WidgetContainer.svelte';
 	export let data;
-	const { currencyWidgetData } = data;
+	const { currencyWidgetData, todoWidgetData } = data;
 </script>
 
 <main class="h-full w-full">
 	<div class="view">
 		<div class="content">
-			<WidgetContainer className="row-span-1">
+			<WidgetContainer>
 				<Dropdown slot="dropdown" title="Settings">
 					<DropdownItem>I dont know</DropdownItem>
 					<DropdownItem>Edit</DropdownItem>
@@ -19,7 +21,7 @@
 				</Dropdown>
 			</WidgetContainer>
 			<CurrencyWidget data={currencyWidgetData} />
-			<WidgetContainer className="row-span-1">3</WidgetContainer>
+			<TodoWidget data={todoWidgetData} />
 			<WidgetContainer className="row-span-1">4</WidgetContainer>
 			<WidgetContainer className="row-span-1" />
 			<WidgetContainer className="row-span-1" />
@@ -30,7 +32,7 @@
 			<WidgetContainer className="row-span-1">11</WidgetContainer>
 			<WidgetContainer className="row-span-1">12</WidgetContainer>
 			<WidgetContainer className="row-span-1">13</WidgetContainer>
-			<WidgetContainer className="row-span-1">14</WidgetContainer>
+			<WidgetContainer>14</WidgetContainer>
 			<WidgetContainer className="row-span-1">15</WidgetContainer>
 			<WidgetContainer className="row-span-1">16</WidgetContainer>
 			<WidgetContainer className="row-span-1">17</WidgetContainer>
@@ -52,5 +54,6 @@
 	.content {
 		@apply grid p-4 gap-4 bg-slate-900;
 		grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+		grid-auto-rows: minmax(0, 16rem);
 	}
 </style>

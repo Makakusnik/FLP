@@ -1,5 +1,12 @@
 import type { ServerCurrencyData } from '$lib/common/widgets/CurrencyWidget/types';
+import type { TodoData } from '$lib/common/widgets/TodoWidget/types';
 import { codePairs, twoLetterCodes } from '$lib/constants/flags';
+
+export const load = () => {
+	const currencyData: ServerCurrencyData[] = populateCurrencyData();
+	const todoData: TodoData[] = populateTodoData();
+	return { currencyData, todoData };
+};
 
 function generateRandomNumbersArray(number: number) {
 	const length = 9;
@@ -24,7 +31,7 @@ function generateRandomNumbersArray(number: number) {
 	return randomNumbersArray;
 }
 
-export const load = () => {
+const populateCurrencyData = () => {
 	const currencyData: ServerCurrencyData[] = [];
 	for (let i = 0; i < 9; i++) {
 		const flagCode = twoLetterCodes[i];
@@ -38,6 +45,95 @@ export const load = () => {
 			flagComponent: flagCode
 		});
 	}
+	return currencyData;
+};
 
-	return { currencyData: currencyData };
+const populateTodoData = () => {
+	const todoData: TodoData[] = [];
+	const todoParent1: TodoData = {
+		title: 'Create site',
+		children: [
+			{
+				title: 'Create nginx config',
+				subtitle: 'Server',
+				labels: [
+					{
+						color: '#065f46',
+						text: 'devops',
+						textColor: 'white'
+					}
+				]
+			},
+			{
+				title: 'Add DNS type A for site',
+				subtitle: 'Network',
+				labels: [
+					{
+						color: '#065f46',
+						text: 'devops',
+						textColor: 'white'
+					}
+				]
+			},
+			{
+				title: 'Setup github actions CI/CD pipline',
+				subtitle: 'Server',
+				labels: [
+					{
+						color: '#065f46',
+						text: 'devops',
+						textColor: 'white'
+					}
+				]
+			}
+		]
+	};
+
+	const todoParent2: TodoData = {
+		title: 'Fill fridge',
+		children: [
+			{
+				title: 'Buy gas',
+				subtitle: 'Car',
+				labels: [
+					{
+						color: '#6d28d9',
+						text: 'chores',
+						textColor: 'white'
+					}
+				]
+			},
+			{
+				title: 'Buy stuff',
+				subtitle: 'Shopping',
+				labels: [
+					{
+						color: '#6d28d9',
+						text: 'chores',
+						textColor: 'white'
+					}
+				]
+			},
+			{
+				title: "Don't forget kilo chleba",
+				subtitle: 'Shopping',
+				labels: [
+					{
+						color: '#6d28d9',
+						text: 'chores',
+						textColor: 'white'
+					},
+					{
+						color: '#be123c',
+						text: 'important',
+						textColor: 'white'
+					}
+				]
+			}
+		]
+	};
+
+	todoData.push(todoParent1, todoParent2);
+
+	return todoData;
 };
