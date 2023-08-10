@@ -1,5 +1,4 @@
 <script lang="ts">
-	import BinIcon from '$lib/assets/icons/BinIcon.svelte';
 	import DotsIcon from '$lib/assets/icons/DotsIcon.svelte';
 	import ListIcon from '$lib/assets/icons/ListIcon.svelte';
 	import PencilIcon from '$lib/assets/icons/PencilIcon.svelte';
@@ -9,6 +8,11 @@
 	import WidgetContainer from '../WidgetContainer.svelte';
 	import type { TodoData } from './types';
 	import TodoView from './TodoView.svelte';
+	import BinFillIcon from '$lib/assets/icons/BinFillIcon.svelte';
+	import TodoFillIcon from '$lib/assets/icons/TodoFillIcon.svelte';
+	import HideFillIcon from '$lib/assets/icons/HideFillIcon.svelte';
+	import { todoState } from '$lib/stores/widgets stores/todo.store';
+	import ShowFillIcon from '$lib/assets/icons/ShowFillIcon.svelte';
 
 	export let data: TodoData[];
 </script>
@@ -29,14 +33,24 @@
 			Details
 		</DropdownItem>
 		<DropdownItem>
-			<BinIcon slot="icon" />
+			<BinFillIcon slot="icon" />
 			Remove
 		</DropdownItem>
 	</Dropdown>
 	<div class="widget-content">
-		<div class="actions w-full p-2">
-			<button class="list-action-button">+ Add new todo parent</button>
-			<button class="list-action-button">+ Hide Complete</button>
+		<div class="actions">
+			<button class="list-action-button"
+				><TodoFillIcon class="w-5 h-5 text-indigo-300" />
+				<p>Add new todo list</p></button>
+			<button class="list-action-button">
+				{#if $todoState.showCompletedTasks}
+					<HideFillIcon class="w-5 h-5 text-indigo-300" />
+					<p>Hide completed tasks</p>
+				{:else}
+					<ShowFillIcon class="w-5 h-5 text-indigo-300" />
+					<p>Show completed tasks</p>
+				{/if}
+			</button>
 		</div>
 		<div class="content">
 			{#each data as todoData (todoData.id)}
@@ -56,7 +70,12 @@
 	}
 
 	.list-action-button {
-		@apply rounded-lg bg-neutral-100/10 px-2 w-fit h-8;
+		@apply rounded-lg hover:bg-neutral-100/10 transition-colors p-2 w-fit h-8;
+		@apply flex gap-x-2 items-center;
+	}
+
+	.actions {
+		@apply flex gap-x-2 w-full p-2;
 	}
 
 	:global(.widget-container) {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import BinIcon from '$lib/assets/icons/BinIcon.svelte';
+	import BinOutlineIcon from '$lib/assets/icons/BinOutlineIcon.svelte';
 	import DotsIcon from '$lib/assets/icons/DotsIcon.svelte';
 	import ListIcon from '$lib/assets/icons/ListIcon.svelte';
 	import PencilIcon from '$lib/assets/icons/PencilIcon.svelte';
@@ -29,7 +29,7 @@
 			Details
 		</DropdownItem>
 		<DropdownItem>
-			<BinIcon slot="icon" />
+			<BinOutlineIcon slot="icon" />
 			Remove
 		</DropdownItem>
 	</Dropdown>

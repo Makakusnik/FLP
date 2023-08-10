@@ -1,7 +1,8 @@
 <script lang="ts">
-	import BinIcon from '$lib/assets/icons/BinIcon.svelte';
+	import BinFillIcon from '$lib/assets/icons/BinFillIcon.svelte';
 	import ChevronDownIcon from '$lib/assets/icons/ChevronDownIcon.svelte';
 	import PencilIcon from '$lib/assets/icons/PencilIcon.svelte';
+	import PlusIcon from '$lib/assets/icons/PlusIcon.svelte';
 
 	export let closedContent = false;
 	export let completedTasks: number;
@@ -19,13 +20,13 @@
 	</button>
 	<div class="action-button-wrapper">
 		<button class="action-button add">
-			<BinIcon class="icon add" />
+			<PlusIcon class="icon add" />
 		</button>
 		<button class="action-button edit">
 			<PencilIcon class="icon edit" />
 		</button>
 		<button class="action-button remove">
-			<BinIcon class="icon remove" />
+			<BinFillIcon class="icon remove" />
 		</button>
 	</div>
 </div>
@@ -50,7 +51,7 @@
 	}
 
 	:global(.icon) {
-		@apply w-4 h-4 transition-colors;
+		@apply w-5 h-5 transition-colors;
 	}
 
 	:global(.icon.add) {
