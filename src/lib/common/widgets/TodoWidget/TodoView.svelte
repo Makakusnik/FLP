@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition';
 	import TodoItem from './TodoItem.svelte';
 	import TodoMainList from './TodoMainList.svelte';
 	import type { TodoData } from './types';
@@ -13,16 +12,16 @@
 	const toggleContentState = () => (closedContent = !closedContent);
 </script>
 
-<TodoMainList
-	{allTasks}
-	{completedTasks}
-	{title}
-	bind:closedContent
-	on:click={toggleContentState} />
-<div class="overflow-hidden">
+<div class="todo-wrapper">
+	<TodoMainList
+		{allTasks}
+		{completedTasks}
+		{title}
+		bind:closedContent
+		on:click={toggleContentState} />
 	{#if !closedContent}
-		<div class="todo-content" transition:fly={{ y: -150, duration: 500 }}>
-			{#each children as { labels, subtitle, title }}
+		<div class="todo-children">
+			{#each children as { labels, subtitle, title, id } (id)}
 				<TodoItem {title} {subtitle} {labels} />
 			{/each}
 		</div>
@@ -30,7 +29,11 @@
 </div>
 
 <style lang="postcss">
-	.todo-content {
-		@apply flex flex-col gap-y-1 items-center;
+	.todo-wrapper {
+		@apply py-2 bg-neutral-500/5;
+	}
+
+	.todo-children {
+		@apply flex flex-col gap-y-1 mt-2 items-center;
 	}
 </style>

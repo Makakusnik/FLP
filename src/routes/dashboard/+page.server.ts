@@ -51,11 +51,13 @@ const populateCurrencyData = () => {
 const populateTodoData = () => {
 	const todoData: TodoData[] = [];
 	const todoParent1: TodoData = {
+		id: '0',
 		title: 'Create site',
 		allTasks: 4,
 		completedTasks: 4,
 		children: [
 			{
+				id: '0',
 				title: 'Create nginx config',
 				subtitle: 'Server',
 				labels: [
@@ -67,6 +69,7 @@ const populateTodoData = () => {
 				]
 			},
 			{
+				id: '1',
 				title: 'Add DNS type A for site',
 				subtitle: 'Network',
 				labels: [
@@ -78,6 +81,7 @@ const populateTodoData = () => {
 				]
 			},
 			{
+				id: '2',
 				title: 'Setup github actions CI/CD pipline',
 				subtitle: 'Server',
 				labels: [
@@ -92,11 +96,13 @@ const populateTodoData = () => {
 	};
 
 	const todoParent2: TodoData = {
+		id: '1',
 		title: 'Fill fridge',
 		allTasks: 4,
 		completedTasks: 0,
 		children: [
 			{
+				id: '3',
 				title: 'Buy gas',
 				subtitle: 'Car',
 				labels: [
@@ -108,6 +114,7 @@ const populateTodoData = () => {
 				]
 			},
 			{
+				id: '4',
 				title: 'Buy stuff',
 				subtitle: 'Shopping',
 				labels: [
@@ -119,6 +126,7 @@ const populateTodoData = () => {
 				]
 			},
 			{
+				id: '5',
 				title: "Don't forget kilo chleba",
 				subtitle: 'Shopping',
 				labels: [

@@ -2,7 +2,7 @@
 	import CancelIcon from '$lib/assets/icons/CancelIcon.svelte';
 	import Check from '$lib/assets/icons/Check.svelte';
 	import { linear } from 'svelte/easing';
-	import { draw, fade, fly } from 'svelte/transition';
+	import { draw, fade, slide } from 'svelte/transition';
 	import { todoState } from '$lib/stores/widgets stores/todo.store';
 	import type { TodoLabel } from './types';
 	import TodoLabels from './TodoLabels.svelte';
@@ -46,7 +46,7 @@
 </script>
 
 {#if !isClosed}
-	<li class="item" out:fly={{ x: 100 }}>
+	<li class="item" transition:slide|global>
 		{#if labels.length > 0}
 			<TodoLabels {labels} on:click={handleLabelClick} />
 		{/if}
@@ -60,29 +60,15 @@
 					<div class="circle" />
 				{/if}
 				{#if shouldClose}
-					<div class="svg-circle-wrapper">
-						<svg viewBox="0 0 46 46">
-							<defs>
-								<path
-									in:draw|local={{ duration: 1500, easing: linear }}
-									fill="none"
-									id="circle"
-									stroke="currentcolor"
-									stroke-width="6"
-									d="M 0, 0m 0, 23a 23,23 0 1,0 46,0a 23,23 0 1,0 -46,0" />
-								<clipPath id="clip">
-									<use xlink:href="#circle" />
-								</clipPath>
-							</defs>
-							<g>
-								<use
-									xlink:href="#circle"
-									stroke="currentcolor"
-									fill="none"
-									clip-path="url(#clip)" />
-							</g>
-						</svg>
-					</div>
+					<svg viewBox="0 0 49 49" class="absolute w-full h-full text-blue-400">
+						<path
+							in:draw={{ duration: 1500, easing: linear }}
+							fill="none"
+							id="circle-{title}"
+							stroke="currentcolor"
+							stroke-width="3"
+							d="M 0, 0m 0, 23a 23,23 0 1,0 46,0a 23,23 0 1,0 -46,0" />
+					</svg>
 				{/if}
 				{#if isHovering || shouldClose}
 					<span in:fade|local={{ duration: 100 }}>
@@ -130,6 +116,6 @@
 	}
 
 	.svg-circle-wrapper {
-		@apply absolute inset-0 w-full h-full text-blue-400;
+		@apply absolute w-full h-full text-blue-400;
 	}
 </style>

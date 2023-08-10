@@ -36,17 +36,17 @@
 	}
 
 	.action-button {
-		@apply flex items-center justify-center rounded-sm transition-colors w-7 h-7 bg-slate-100/20;
+		@apply flex items-center justify-center rounded-sm transition-colors w-7 h-7 bg-slate-100/5;
 	}
 
 	.action-button:hover.add {
-		@apply bg-green-300/30;
+		@apply bg-green-300/10;
 	}
 	.action-button:hover.edit {
-		@apply bg-yellow-300/30;
+		@apply bg-yellow-300/10;
 	}
 	.action-button:hover.remove {
-		@apply bg-rose-300/30;
+		@apply bg-rose-300/10;
 	}
 
 	:global(.icon) {
@@ -75,7 +75,7 @@
 	}
 
 	.main-button {
-		@apply flex items-center m-2 cursor-pointer w-fit px-2 py-1 rounded-md hover:bg-neutral-100/10 transition-colors;
+		@apply flex items-center mx-2 cursor-pointer w-fit px-2 py-1 rounded-md hover:bg-neutral-100/5 transition-colors;
 	}
 
 	.action-button-wrapper {

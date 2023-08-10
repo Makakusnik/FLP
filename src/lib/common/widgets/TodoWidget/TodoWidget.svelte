@@ -12,8 +12,6 @@
 
 	export let data: TodoData[];
 
-	let closedContent = false;
-
 	const labels: TodoLabel[] = [
 		{ text: 'Yes', color: 'lime', textColor: 'black' },
 		{ text: 'Feature', color: 'yellow', textColor: 'black' },
@@ -31,7 +29,7 @@
 	];
 </script>
 
-<WidgetContainer title="Todo" className="sm:col-span-2 row-span-2 isolate">
+<WidgetContainer title="Todo" className="widget-container">
 	<Dropdown slot="dropdown" title="Settings">
 		<SettingsIcon slot="titleIcon" />
 		<DropdownItem>
@@ -51,20 +49,33 @@
 			Remove
 		</DropdownItem>
 	</Dropdown>
-	<div class="flex flex-col justify-between w-full h-full bg-neutral-800 overflow-hidden">
-		<div class="content overflow-y-auto">
-			<div class="h-fit">
-				{#each data as todoData}
-					<TodoView data={todoData} />
-				{/each}
-			</div>
+	<div class="widget-content">
+		<div class="actions w-full p-2">
+			<button class="list-action-button">+ Add new todo parent</button>
+			<button class="list-action-button">+ Hide Complete</button>
 		</div>
-		<div class="actions w-full p-2 bg-neutral-100/5">
-			<button class="rounded-lg bg-neutral-100/10 w-8 h-8">+</button>
-			<button class="rounded-lg bg-neutral-100/10 px-2 w-fit h-8">+Folder</button>
+		<div class="content">
+			{#each data as todoData (todoData.id)}
+				<TodoView data={todoData} />
+			{/each}
 		</div>
 	</div>
 </WidgetContainer>
 
 <style lang="postcss">
+	.content {
+		@apply flex flex-col overflow-y-auto gap-y-2;
+	}
+
+	.widget-content {
+		@apply flex flex-col w-full h-full bg-neutral-800 overflow-hidden;
+	}
+
+	.list-action-button {
+		@apply rounded-lg bg-neutral-100/10 px-2 w-fit h-8;
+	}
+
+	:global(.widget-container) {
+		@apply sm:col-span-2 row-span-2 isolate;
+	}
 </style>

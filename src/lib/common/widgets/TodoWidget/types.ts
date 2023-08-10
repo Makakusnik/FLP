@@ -5,12 +5,14 @@ export type TodoLabel = {
 };
 
 export type TodoItem = {
+	id: string;
 	title: string;
 	subtitle: string;
 	labels: TodoLabel[];
 };
 
 export type TodoData = {
+	id: string;
 	title: string;
 	allTasks: number;
 	completedTasks: number;
