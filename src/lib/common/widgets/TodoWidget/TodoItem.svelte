@@ -114,8 +114,4 @@
 	.check-button-wrapper {
 		@apply flex items-center;
 	}
-
-	.svg-circle-wrapper {
-		@apply absolute w-full h-full text-blue-400;
-	}
 </style>

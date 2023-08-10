@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Check from '$lib/assets/icons/Check.svelte';
 	import Dropdown from '$lib/common/dropdown/Dropdown.svelte';
 	import DropdownItem from '$lib/common/dropdown/DropdownItem.svelte';
 	import CurrencyWidget from '$lib/common/widgets/CurrencyWidget/CurrencyWidget.svelte';

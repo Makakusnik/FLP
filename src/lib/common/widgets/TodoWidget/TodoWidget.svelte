@@ -7,26 +7,10 @@
 	import Dropdown from '$lib/common/dropdown/Dropdown.svelte';
 	import DropdownItem from '$lib/common/dropdown/DropdownItem.svelte';
 	import WidgetContainer from '../WidgetContainer.svelte';
-	import type { TodoData, TodoLabel } from './types';
+	import type { TodoData } from './types';
 	import TodoView from './TodoView.svelte';
 
 	export let data: TodoData[];
-
-	const labels: TodoLabel[] = [
-		{ text: 'Yes', color: 'lime', textColor: 'black' },
-		{ text: 'Feature', color: 'yellow', textColor: 'black' },
-		{ text: 'Bugfix', color: 'magenta', textColor: 'black' },
-		{ text: 'Long task', color: 'purple', textColor: 'white' },
-		{ text: 'easy', color: 'rgb(0,125,0)', textColor: 'white' },
-		{ text: 'hard', color: 'rgba(100,100,0)', textColor: 'white' }
-	];
-
-	const list = [
-		{ title: 'nieco', subtitle: 'daco ine', labels },
-		{ title: 'Task 1 asdasd ', subtitle: 'asx ine', labels },
-		{ title: 'Task 2', subtitle: 'xds ine', labels },
-		{ title: 'Task 4', subtitle: 'ffff ff' }
-	];
 </script>
 
 <WidgetContainer title="Todo" className="widget-container">
