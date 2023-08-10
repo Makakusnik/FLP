@@ -7,8 +7,7 @@
 <div
 	class="hack w-full h-full"
 	in:fly|local={{ x: 300, duration: 500, delay: 650 }}
-	out:fly|local={{ x: -800, duration: 600 }}
->
+	out:fly|local={{ x: -800, duration: 600 }}>
 	<div class="headlines">
 		<p class:active={activeSection === 0}>Top-notch documentation</p>
 		<p class:active={activeSection === 1}>Best practices</p>
@@ -20,22 +19,19 @@
 			on:mouseleave={() => (activeSection = undefined)}
 			on:focus
 			role="img"
-			class="clip clip1"
-		/>
+			class="clip clip1" />
 		<div
 			on:mouseover={() => (activeSection = 1)}
 			on:mouseleave={() => (activeSection = undefined)}
 			on:focus
 			role="img"
-			class="clip clip2"
-		/>
+			class="clip clip2" />
 		<div
 			on:mouseover={() => (activeSection = 2)}
 			on:mouseleave={() => (activeSection = undefined)}
 			on:focus
 			role="img"
-			class="clip clip3"
-		/>
+			class="clip clip3" />
 	</div>
 </div>
 
