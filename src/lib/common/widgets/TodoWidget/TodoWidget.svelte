@@ -13,8 +13,13 @@
 	import HideFillIcon from '$lib/assets/icons/HideFillIcon.svelte';
 	import { todoState } from '$lib/stores/widgets stores/todo.store';
 	import ShowFillIcon from '$lib/assets/icons/ShowFillIcon.svelte';
+	import AddParentModal from './AddParentModal.svelte';
 
 	export let data: TodoData[];
+
+	let isOpened = false;
+
+	const handleAddParent = () => (isOpened = true);
 </script>
 
 <WidgetContainer title="Todo" className="widget-container">
@@ -37,9 +42,10 @@
 			Remove
 		</DropdownItem>
 	</Dropdown>
+	<AddParentModal bind:isOpened />
 	<div class="widget-content">
 		<div class="actions">
-			<button class="list-action-button"
+			<button class="list-action-button" on:click={handleAddParent}
 				><TodoFillIcon class="w-5 h-5 text-indigo-300" />
 				<p>Add new todo list</p></button>
 			<button class="list-action-button">
