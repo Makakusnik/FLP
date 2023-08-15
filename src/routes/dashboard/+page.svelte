@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Dropdown from '$lib/common/dropdown/Dropdown.svelte';
 	import DropdownItem from '$lib/common/dropdown/DropdownItem.svelte';
+	import DatePicker from '$lib/common/input/DatePicker.svelte';
 	import CurrencyWidget from '$lib/common/widgets/CurrencyWidget/CurrencyWidget.svelte';
 	import TodoWidget from '$lib/common/widgets/TodoWidget/TodoWidget.svelte';
 	import WidgetContainer from '$lib/common/widgets/WidgetContainer.svelte';
@@ -21,7 +22,9 @@
 			</WidgetContainer>
 			<CurrencyWidget data={currencyWidgetData} />
 			<TodoWidget data={todoWidgetData} />
-			<WidgetContainer className="row-span-1">4</WidgetContainer>
+			<WidgetContainer className="row-span-1">
+				<DatePicker />
+			</WidgetContainer>
 			<WidgetContainer className="row-span-1" />
 			<WidgetContainer className="row-span-1" />
 			<WidgetContainer className="row-span-1" />
