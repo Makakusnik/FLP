@@ -7,186 +7,131 @@
 	import dayjs, { Dayjs } from 'dayjs';
 	import weekDayPlugin from 'dayjs/plugin/weekday';
 	import dayjsSkLocale from 'dayjs/locale/sk';
-	import YearSelection from './YearSelection.svelte';
+	import YearView from './YearView.svelte';
+	import DayCells from './DayCells.svelte';
+	import { createEventDispatcher } from 'svelte';
+
+	export let name: string;
+
+	const dispatch = createEventDispatcher<{ datechange: Dayjs }>();
+
+	function dateChangeDispatcher(changedDate: Dayjs) {
+		dispatch('datechange', changedDate);
+	}
 	dayjs.extend(updateLocalePlugin);
 	dayjs.extend(weekDayPlugin);
 	dayjs.locale('sk');
 
 	const days: string[] = dayjsSkLocale.weekdaysMin || [];
 
-	const isToday = (day: number, currentDate: Dayjs) => {
-		return (
-			currentDate.format('M.YYYY') === dayjs().format('M.YYYY') &&
-			day === Number(dayjs().format('D'))
-		);
-	};
-
-	const isSelected = (day: number, currentDate: Dayjs, selectedDate: Dayjs) => {
-		if (!selectedDate) return false;
-		return (
-			currentDate.format('M.YYYY') === selectedDate.format('M.YYYY') &&
-			day === Number(selectedDate.format('D'))
-		);
-	};
-
 	let selectedDate: Dayjs;
-	let currentDateInView = dayjs();
-	let monthBeforeSelectedDate: Dayjs;
-	let monthAfterSelectedDate: Dayjs;
+	let dateInView = dayjs();
 
-	$: {
-		monthBeforeSelectedDate = currentDateInView.set('month', currentDateInView.get('month') - 1);
-		monthAfterSelectedDate = currentDateInView.set('month', currentDateInView.get('month') + 1);
-	}
+	let isYearViewOpen = false;
 
-	let selectedMonthYear: string;
-	$: selectedMonthYear = `${currentDateInView.format('MMMM')} ${currentDateInView.format('YYYY')}`;
+	let increasedEffect = false;
+	let decreasedEffect = false;
 
-	let isSelectOpen = false;
+	const handleOpenYearView = () => (isYearViewOpen = !isYearViewOpen);
 
-	let monthStartDaysOffset: number;
-	let monthEndDaysOffset: number;
-	$: {
-		const startNumber = Number(currentDateInView.startOf('month').format('d')) - 1;
-
-		monthStartDaysOffset = startNumber < 0 ? 6 : startNumber;
-		// 42 is number of tiles in calendar (6 rows * 7 columns)
-		monthEndDaysOffset = 42 - (monthStartDaysOffset + currentDateInView.daysInMonth());
-	}
-
-	const handleOpenSelect = () => (isSelectOpen = !isSelectOpen);
-
-	const increaseMonthOffset = () => (currentDateInView = currentDateInView.add(1, 'month'));
-	const decreaseMonthOffset = () => (currentDateInView = currentDateInView.subtract(1, 'month'));
-
-	const selectDate = (day: number, dateInView: Dayjs) => (event: MouseEvent) => {
-		selectedDate = dateInView.set('date', day);
-		console.log('Selected!:', selectedDate.format('DD.MM.YYYY'));
+	const selectDate = (newDate: Dayjs) => {
+		selectedDate = newDate;
+		dateChangeDispatcher(newDate);
 	};
 
-	const selectDateMonthBefore = (day: number, dateInView: Dayjs) => () => {
-		selectedDate = dateInView.set('date', day);
-
-		decreaseMonthOffset();
+	const increaseMonthOffset = () => {
+		increasedEffect = true;
+		dateInView = dateInView.add(1, 'month');
+	};
+	const decreaseMonthOffset = () => {
+		decreasedEffect = true;
+		dateInView = dateInView.subtract(1, 'month');
 	};
 
-	const selectDateMonthAfter = (day: number, dateInView: Dayjs) => () => {
-		selectedDate = dateInView.set('date', day);
-		increaseMonthOffset();
-	};
+	const handleSelectYear = (year: number) => () => (dateInView = dateInView.set('year', year));
 </script>
 
-<input type="text" />
+<label for={name}><slot /></label>
+<input id={name} type="text" />
 <div class="absolute">
-	<div class="calendar-container relative">
-		<div class="top-list relative">
-			<div class="select-container" on:click={handleOpenSelect}>
-				{#key selectedMonthYear}
-					<p class="select-text" in:fade>{selectedMonthYear}</p>
+	<div class="calendar-container relative isolate" role="dialog">
+		<div class="top-list relative z-10">
+			<div class="select" on:click={handleOpenYearView} role="presentation" aria-live="polite">
+				{#key dateInView}
+					<p in:fade>{`${dateInView.format('MMMM')} ${dateInView.format('YYYY')}`}</p>
 				{/key}
-				<button class="expand-button"
+				<button
+					type="button"
+					class="expand-button"
+					aria-label="Calendar is opened switch to year view."
 					><ChevronDownIcon
-						class="w-5 h-5 transition-transform {isSelectOpen ? 'rotate-180' : ''}" /></button>
+						class="w-5 h-5 transition-transform {isYearViewOpen ? 'rotate-180' : ''}" /></button>
 			</div>
-			{#if isSelectOpen}
-				<YearSelection bind:offsetDate={currentDateInView} />
+			{#if isYearViewOpen}
+				<YearView {handleSelectYear} year={dateInView.get('year')} />
 			{/if}
-			{#if !isSelectOpen}
+			{#if !isYearViewOpen}
 				<div class="month-buttons" transition:fade={{ duration: 100 }}>
-					<button on:click={decreaseMonthOffset}>
+					<button
+						type="button"
+						on:click={decreaseMonthOffset}
+						title="Previous month"
+						aria-label="Previous month">
 						<ChevronLeftIcon class="w-5 h-5" />
 					</button>
-					<button on:click={increaseMonthOffset}>
+					<button
+						type="button"
+						on:click={increaseMonthOffset}
+						title="Next month"
+						aria-label="Next month">
 						<ChevronRightIcon class="w-5 h-5" />
 					</button>
 				</div>
 			{/if}
 		</div>
-		<div class="content">
-			<div class="day-headers">
+		<div class="content" role="grid" aria-labelledby={name}>
+			<div class="day-headers" role="row">
 				{#each days as _, index}
-					<span>{days[dayjs().weekday(index).get('d')]}</span>
+					<span role="columnheader" aria-label={dayjs().weekday(index).format('dddd')}
+						>{days[dayjs().weekday(index).get('d')]}</span>
 				{/each}
 			</div>
-			<div class="day-cells">
-				{#each Array(monthStartDaysOffset) as _, index}
-					<button
-						class="month-outside"
-						on:click={selectDateMonthBefore(
-							Number(monthBeforeSelectedDate.endOf('month').format('D')) -
-								monthStartDaysOffset +
-								index +
-								1,
-							monthBeforeSelectedDate
-						)}
-						>{Number(monthBeforeSelectedDate.endOf('month').format('D')) -
-							monthStartDaysOffset +
-							index +
-							1}
-					</button>
-				{/each}
-				{#each Array(currentDateInView.daysInMonth()) as _, index}
-					<button
-						class:current={isToday(index + 1, currentDateInView)}
-						class:selected={isSelected(index + 1, currentDateInView, selectedDate)}
-						on:click={selectDate(index + 1, currentDateInView)}>{index + 1}</button>
-				{/each}
-				{#each Array(monthEndDaysOffset) as _, index}
-					<button
-						class="month-outside"
-						on:click={selectDateMonthAfter(
-							Number(monthAfterSelectedDate.startOf('month').format('D')) + index,
-							monthAfterSelectedDate
-						)}
-						>{Number(monthAfterSelectedDate.startOf('month').format('D')) + index}
-					</button>
-				{/each}
+			<div class="grid h-fit" role="presentation">
+				<DayCells
+					bind:increasedEffect
+					bind:decreasedEffect
+					{selectDate}
+					{dateInView}
+					{increaseMonthOffset}
+					{decreaseMonthOffset}
+					{selectedDate} />
 			</div>
 		</div>
-
 		<div>tabs</div>
 	</div>
 </div>
 
 <style lang="postcss">
 	.content {
-		@apply flex flex-col items-center justify-center;
+		@apply grid flex-col items-center justify-center;
 	}
 
 	.day-headers {
-		@apply grid gap-x-2 w-[80%] h-full justify-center mt-2;
+		@apply grid gap-x-1 h-full mt-2;
 		grid-template-columns: repeat(7, 1fr);
 	}
 
 	.day-headers span {
-		@apply uppercase font-semibold w-8 h-8 text-xs text-neutral-400;
-		@apply flex justify-center;
-	}
-
-	.day-cells {
-		@apply grid w-[80%] h-full gap-2 justify-center mt-4;
-		grid-template-columns: repeat(7, 1fr);
-		grid-template-rows: repeat(6, 1fr);
-	}
-
-	.day-cells .month-outside {
-		@apply text-neutral-600;
-	}
-
-	.day-cells button {
-		@apply flex justify-center items-center text-sm font-medium cursor-pointer w-8 h-8 hover:bg-neutral-600/40 rounded-sm;
-	}
-
-	.day-cells .current {
-		@apply bg-indigo-500;
-	}
-
-	.day-cells .selected {
-		@apply bg-indigo-600 shadow-inner;
+		@apply uppercase font-semibold w-8 h-4 text-xs text-neutral-400;
+		@apply flex justify-center items-center;
 	}
 
 	.expand-button {
 		@apply hover:bg-neutral-700 transition-colors flex justify-center items-center p-2 rounded-full;
+	}
+
+	.expand-button:focus {
+		@apply bg-neutral-600;
 	}
 
 	.month-buttons {
@@ -197,13 +142,17 @@
 		@apply hover:bg-neutral-700 p-2 rounded-full transition-colors;
 	}
 
-	.select-text {
-		@apply font-medium px-4 py-1 transition-colors rounded-xl capitalize;
+	.month-buttons button:focus {
+		@apply bg-neutral-600;
 	}
 
-	.select-container {
+	.select {
 		@apply min-w-[10rem] px-1 py-1 items-center h-fit rounded-md m-1 cursor-pointer;
 		@apply relative flex justify-between;
+	}
+
+	.select p {
+		@apply font-medium px-4 py-1 transition-colors rounded-xl capitalize;
 	}
 
 	.calendar-container {

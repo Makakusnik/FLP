@@ -3,7 +3,8 @@
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
-	export let offsetDate: Dayjs;
+	export let handleSelectYear: (year: number) => () => void;
+	export let year: number;
 
 	const years = Array(150);
 	for (let i = 0; i < years.length; i++) {
@@ -15,20 +16,18 @@
 	let yearOffsetPadding = 120;
 
 	onMount(() => {
-		currentYearNode = document?.getElementById(`y-${offsetDate.get('year')}`);
+		currentYearNode = document?.getElementById(`y-${year}`);
 		let yearOffsetInPx = currentYearNode?.offsetTop || 0;
 		yearContainerRef.scrollTo({ top: yearOffsetInPx - yearOffsetPadding });
 	});
-
-	const handleSelectYear = (year: number) => () => (offsetDate = offsetDate.set('year', year));
 </script>
 
 <div bind:this={yearContainerRef} class="select-content" transition:fade={{ duration: 100 }}>
-	{#each years as year}
+	{#each years as yearValue}
 		<button
-			id="y-{year}"
-			class:active={year === offsetDate.get('year')}
-			on:click={handleSelectYear(year)}>{year}</button>
+			id="y-{yearValue}"
+			class:active={yearValue === year}
+			on:click={handleSelectYear(yearValue)}>{yearValue}</button>
 	{/each}
 </div>
 

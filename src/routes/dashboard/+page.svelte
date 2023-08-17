@@ -5,8 +5,11 @@
 	import CurrencyWidget from '$lib/common/widgets/CurrencyWidget/CurrencyWidget.svelte';
 	import TodoWidget from '$lib/common/widgets/TodoWidget/TodoWidget.svelte';
 	import WidgetContainer from '$lib/common/widgets/WidgetContainer.svelte';
+	import type { Dayjs } from 'dayjs';
 	export let data;
 	const { currencyWidgetData, todoWidgetData } = data;
+
+	const handleDateChange = (data: CustomEvent<Dayjs>) => {};
 </script>
 
 <main class="h-full w-full">
@@ -23,7 +26,7 @@
 			<CurrencyWidget data={currencyWidgetData} />
 			<TodoWidget data={todoWidgetData} />
 			<WidgetContainer className="row-span-1">
-				<DatePicker />
+				<DatePicker on:datechange={handleDateChange} name="datum" />
 			</WidgetContainer>
 			<WidgetContainer className="row-span-1" />
 			<WidgetContainer className="row-span-1" />
