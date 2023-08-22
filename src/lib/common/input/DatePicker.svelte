@@ -9,35 +9,32 @@
 	import dayjsSkLocale from 'dayjs/locale/sk';
 	import YearView from './YearView.svelte';
 	import DayCells from './DayCells.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
+	import { clickOutside } from '$lib/utilities/directives/clickOutside';
 
 	export let name: string;
+	export let isOpen: boolean;
+	export let focusGuardRef: HTMLDivElement;
 
-	const dispatch = createEventDispatcher<{ datechange: Dayjs }>();
-
-	function dateChangeDispatcher(changedDate: Dayjs) {
-		dispatch('datechange', changedDate);
-	}
 	dayjs.extend(updateLocalePlugin);
 	dayjs.extend(weekDayPlugin);
 	dayjs.locale('sk');
 
-	const days: string[] = dayjsSkLocale.weekdaysMin || [];
-
-	let selectedDate: Dayjs;
 	let dateInView = dayjs();
-
 	let isYearViewOpen = false;
 
 	let increasedEffect = false;
 	let decreasedEffect = false;
 
-	const handleOpenYearView = () => (isYearViewOpen = !isYearViewOpen);
+	let dialogRef: HTMLElement;
 
-	const selectDate = (newDate: Dayjs) => {
-		selectedDate = newDate;
-		dateChangeDispatcher(newDate);
+	const days: string[] = dayjsSkLocale.weekdaysMin || [];
+
+	const close = () => {
+		isOpen = false;
 	};
+
+	const handleOpenYearView = () => (isYearViewOpen = !isYearViewOpen);
 
 	const increaseMonthOffset = () => {
 		increasedEffect = true;
@@ -48,20 +45,25 @@
 		dateInView = dateInView.subtract(1, 'month');
 	};
 
+	onMount(() => {
+		focusGuardRef.focus();
+	});
+
 	const handleSelectYear = (year: number) => () => (dateInView = dateInView.set('year', year));
 </script>
 
-<label for={name}><slot /></label>
-<input id={name} type="text" />
-<div class="absolute">
-	<div class="calendar-container relative isolate" role="dialog">
-		<div class="top-list relative z-10">
+<div class="absolute" use:clickOutside on:clickoutside={close} in:fade={{ duration: 100 }}>
+	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+	<div id="focus-guard" bind:this={focusGuardRef} />
+	<div class="calendar-container" role="dialog" bind:this={dialogRef}>
+		<div class="top-list">
 			<div class="select" on:click={handleOpenYearView} role="presentation" aria-live="polite">
 				{#key dateInView}
 					<p in:fade>{`${dateInView.format('MMMM')} ${dateInView.format('YYYY')}`}</p>
 				{/key}
 				<button
 					type="button"
+					id="{name}-year-view-expand"
 					class="expand-button"
 					aria-label="Calendar is opened switch to year view."
 					><ChevronDownIcon
@@ -74,6 +76,7 @@
 				<div class="month-buttons" transition:fade={{ duration: 100 }}>
 					<button
 						type="button"
+						id="{name}-prev-month-button"
 						on:click={decreaseMonthOffset}
 						title="Previous month"
 						aria-label="Previous month">
@@ -81,6 +84,7 @@
 					</button>
 					<button
 						type="button"
+						id="{name}-next-month-button"
 						on:click={increaseMonthOffset}
 						title="Next month"
 						aria-label="Next month">
@@ -96,16 +100,12 @@
 						>{days[dayjs().weekday(index).get('d')]}</span>
 				{/each}
 			</div>
-			<div class="grid h-fit" role="presentation">
-				<DayCells
-					bind:increasedEffect
-					bind:decreasedEffect
-					{selectDate}
-					{dateInView}
-					{increaseMonthOffset}
-					{decreaseMonthOffset}
-					{selectedDate} />
-			</div>
+			<DayCells
+				bind:increasedEffect
+				bind:decreasedEffect
+				{dateInView}
+				{increaseMonthOffset}
+				{decreaseMonthOffset} />
 		</div>
 		<div>tabs</div>
 	</div>
@@ -156,10 +156,10 @@
 	}
 
 	.calendar-container {
-		@apply flex flex-col bg-neutral-800 h-96 w-80 rounded-md overflow-hidden;
+		@apply flex flex-col bg-neutral-800 h-96 w-80 rounded-md overflow-hidden relative isolate;
 	}
 
 	.top-list {
-		@apply flex;
+		@apply flex relative z-10;
 	}
 </style>

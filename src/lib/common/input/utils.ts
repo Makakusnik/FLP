@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs';
+import type { Dayjs } from 'dayjs';
 import type { Day } from './types';
 
 export const generateDaysInView = (
@@ -33,16 +33,12 @@ export const generateDaysInView = (
 	return array;
 };
 
-export const isToday = (day: number, currentDate: Dayjs) => {
-	return (
-		currentDate.format('M.YYYY') === dayjs().format('M.YYYY') && day === Number(dayjs().format('D'))
-	);
-};
+export const subtractWeek = (dateToUpdate: Dayjs) => dateToUpdate.subtract(7, 'day');
+export const subtractDay = (dateToUpdate: Dayjs) => dateToUpdate.subtract(1, 'day');
+export const addWeek = (dateToUpdate: Dayjs) => dateToUpdate.add(7, 'day');
+export const addDay = (dateToUpdate: Dayjs) => dateToUpdate.add(1, 'day');
 
-export const isSelected = (day: number, currentDate: Dayjs, selectedDate: Dayjs) => {
-	if (!selectedDate) return false;
-	return (
-		currentDate.format('M.YYYY') === selectedDate.format('M.YYYY') &&
-		day === Number(selectedDate.format('D'))
-	);
-};
+export const isSameMonth = (dateA: Dayjs, dateB: Dayjs) =>
+	dateA.format('M.YYYY') === dateB.format('M.YYYY');
+
+export const getDate = (day: number, dateInView: Dayjs) => dateInView.set('date', day);
