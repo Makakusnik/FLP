@@ -9,7 +9,7 @@
 	import dayjsSkLocale from 'dayjs/locale/sk';
 	import YearView from './YearView.svelte';
 	import DayCells from './DayCells.svelte';
-	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { clickOutside } from '$lib/utilities/directives/clickOutside';
 
 	export let name: string;
@@ -26,7 +26,9 @@
 	let increasedEffect = false;
 	let decreasedEffect = false;
 
-	let dialogRef: HTMLElement;
+	let firstButtonRef: HTMLElement;
+	let nextMonthButtonRef: HTMLElement;
+	let focusLastFocusedDate: (e: KeyboardEvent) => void;
 
 	const days: string[] = dayjsSkLocale.weekdaysMin || [];
 
@@ -45,8 +47,25 @@
 		dateInView = dateInView.subtract(1, 'month');
 	};
 
+	const handleFocusGuardKeydown = (e: KeyboardEvent) => {
+		e.preventDefault();
+	};
+
+	const handleFirstButtonFocusSwitch = (e: KeyboardEvent) => {
+		if (e.shiftKey && e.key === 'Tab') {
+			focusLastFocusedDate(e);
+		}
+	};
+
 	onMount(() => {
 		focusGuardRef.focus();
+		focusGuardRef.addEventListener('keydown', handleFocusGuardKeydown);
+		firstButtonRef.addEventListener('keydown', handleFirstButtonFocusSwitch);
+	});
+
+	onDestroy(() => {
+		focusGuardRef.focus();
+		focusGuardRef.removeEventListener('keydown', handleFocusGuardKeydown);
 	});
 
 	const handleSelectYear = (year: number) => () => (dateInView = dateInView.set('year', year));
@@ -54,8 +73,8 @@
 
 <div class="absolute" use:clickOutside on:clickoutside={close} in:fade={{ duration: 100 }}>
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-	<div id="focus-guard" bind:this={focusGuardRef} />
-	<div class="calendar-container" role="dialog" bind:this={dialogRef}>
+	<div id="focus-guard" bind:this={focusGuardRef} tabindex="0" />
+	<div class="calendar-container" role="dialog">
 		<div class="top-list">
 			<div class="select" on:click={handleOpenYearView} role="presentation" aria-live="polite">
 				{#key dateInView}
@@ -64,6 +83,7 @@
 				<button
 					type="button"
 					id="{name}-year-view-expand"
+					bind:this={firstButtonRef}
 					class="expand-button"
 					aria-label="Calendar is opened switch to year view."
 					><ChevronDownIcon
@@ -85,6 +105,7 @@
 					<button
 						type="button"
 						id="{name}-next-month-button"
+						bind:this={nextMonthButtonRef}
 						on:click={increaseMonthOffset}
 						title="Next month"
 						aria-label="Next month">
@@ -103,6 +124,10 @@
 			<DayCells
 				bind:increasedEffect
 				bind:decreasedEffect
+				bind:focusGuardRef
+				bind:firstButtonRef
+				bind:focusLastFocusedDate
+				bind:nextMonthButtonRef
 				{dateInView}
 				{increaseMonthOffset}
 				{decreaseMonthOffset} />

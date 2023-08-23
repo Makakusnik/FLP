@@ -13,6 +13,9 @@
 	export let increaseMonthOffset: () => void;
 	export let increasedEffect: boolean;
 	export let decreasedEffect: boolean;
+	export let focusGuardRef: HTMLElement;
+	export let firstButtonRef: HTMLElement;
+	export let nextMonthButtonRef: HTMLElement;
 
 	const today = dayjs();
 
@@ -52,24 +55,26 @@
 
 	const navigationHandler = (event: KeyboardEvent) => {
 		if (!focusedDate) return;
+		if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(event.key))
+			event.preventDefault();
 		// TODO skusit extracnut do reactive statementu increase a decrease
 
 		if (event.key === 'ArrowDown') {
-			event.preventDefault();
 			focusedDate = addWeek(focusedDate);
 			if (focusedDate.isAfter(dateInView, 'month')) increaseMonthOffset();
 		} else if (event.key === 'ArrowUp') {
-			event.preventDefault();
 			focusedDate = subtractWeek(focusedDate);
 			if (focusedDate.isBefore(dateInView, 'month')) decreaseMonthOffset();
 		} else if (event.key === 'ArrowLeft') {
-			event.preventDefault();
 			focusedDate = subtractDay(focusedDate);
 			if (focusedDate.isBefore(dateInView, 'month')) decreaseMonthOffset();
 		} else if (event.key === 'ArrowRight') {
-			event.preventDefault();
 			focusedDate = addDay(focusedDate);
 			if (focusedDate.isAfter(dateInView, 'month')) increaseMonthOffset();
+		} else if (event.shiftKey && event.key === 'Tab') {
+			nextMonthButtonRef.focus();
+		} else if (event.key === 'Tab') {
+			firstButtonRef.focus();
 		}
 	};
 
@@ -132,6 +137,15 @@
 		return isSelectedCheck || isFocusedCheck ? 0 : -1;
 	};
 
+	export const focusLastFocusedDate = (e: KeyboardEvent) => {
+		e.preventDefault();
+		let idToFind = `date-${focusedDate.format('DD.MM.YYYY')}`;
+
+		const element = document.getElementById(idToFind);
+
+		element?.focus();
+	};
+
 	$: {
 		if (focusedDate && !(increasedEffect || decreasedEffect)) {
 			const element = document.getElementById(`date-${focusedDate.format('DD.MM.YYYY')}`);
@@ -150,6 +164,14 @@
 			on:outroend={() => {
 				increasedEffect = false;
 				decreasedEffect = false;
+			}}
+			on:introstart={() => {}}
+			on:outrostart={(e) => {
+				focusGuardRef.focus();
+			}}
+			on:introend={() => {
+				const element = document.getElementById(`date-${focusedDate.format('DD.MM.YYYY')}`);
+				element?.focus();
 			}}>
 			<div class="day-cells" role="rowgroup">
 				{#each daysInView as innerArray, mainIndex}
