@@ -3,21 +3,19 @@
 	import ChevronLeftIcon from '$lib/assets/icons/ChevronLeftIcon.svelte';
 	import ChevronRightIcon from '$lib/assets/icons/ChevronRightIcon.svelte';
 	import { fade } from 'svelte/transition';
-	import updateLocalePlugin from 'dayjs/plugin/updateLocale';
-	import dayjs, { Dayjs } from 'dayjs';
-	import weekDayPlugin from 'dayjs/plugin/weekday';
 	import dayjsSkLocale from 'dayjs/locale/sk';
+	import dayjs, { Dayjs } from 'dayjs';
 	import YearView from './YearView.svelte';
 	import DayCells from './DayCells.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { clickOutside } from '$lib/utilities/directives/clickOutside';
-
+	import { arrowKeyCodes } from './utils';
 	export let name: string;
 	export let isOpen: boolean;
 	export let focusGuardRef: HTMLDivElement;
+	export let selectedDate: Dayjs;
+	export let inputRef: HTMLInputElement;
 
-	dayjs.extend(updateLocalePlugin);
-	dayjs.extend(weekDayPlugin);
 	dayjs.locale('sk');
 
 	let dateInView = dayjs();
@@ -32,7 +30,8 @@
 
 	const days: string[] = dayjsSkLocale.weekdaysMin || [];
 
-	const close = () => {
+	const close = (e: Event) => {
+		if (document.activeElement === inputRef) return;
 		isOpen = false;
 	};
 
@@ -48,7 +47,7 @@
 	};
 
 	const handleFocusGuardKeydown = (e: KeyboardEvent) => {
-		e.preventDefault();
+		if (arrowKeyCodes.includes(e.key)) e.preventDefault();
 	};
 
 	const handleFirstButtonFocusSwitch = (e: KeyboardEvent) => {
@@ -58,27 +57,46 @@
 	};
 
 	onMount(() => {
-		focusGuardRef.focus();
 		focusGuardRef.addEventListener('keydown', handleFocusGuardKeydown);
 		firstButtonRef.addEventListener('keydown', handleFirstButtonFocusSwitch);
 	});
 
 	onDestroy(() => {
-		focusGuardRef.focus();
 		focusGuardRef.removeEventListener('keydown', handleFocusGuardKeydown);
+		firstButtonRef.removeEventListener('keydown', handleFirstButtonFocusSwitch);
 	});
 
-	const handleSelectYear = (year: number) => () => (dateInView = dateInView.set('year', year));
+	const updateDateInView = (date: Dayjs) => {
+		if (!date) return;
+		if (!date.isSame(dateInView, 'month')) {
+			dateInView = date;
+		}
+	};
+
+	$: {
+		updateDateInView(selectedDate);
+	}
+
+	const handleSelectYear = (year: number) => () => {
+		dateInView = dateInView.set('year', year);
+		isYearViewOpen = false;
+	};
 </script>
 
-<div class="absolute" use:clickOutside on:clickoutside={close} in:fade={{ duration: 100 }}>
+<div
+	class="flex items-end mt-2 absolute"
+	use:clickOutside
+	on:clickoutside={close}
+	in:fade={{ duration: 100 }}>
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 	<div id="focus-guard" bind:this={focusGuardRef} tabindex="0" />
 	<div class="calendar-container" role="dialog">
 		<div class="top-list">
 			<div class="select" on:click={handleOpenYearView} role="presentation" aria-live="polite">
 				{#key dateInView}
-					<p in:fade>{`${dateInView.format('MMMM')} ${dateInView.format('YYYY')}`}</p>
+					<p class="month-title" in:fade>
+						{`${dateInView.format('MMMM')} ${dateInView.format('YYYY')}`}
+					</p>
 				{/key}
 				<button
 					type="button"
@@ -124,15 +142,14 @@
 			<DayCells
 				bind:increasedEffect
 				bind:decreasedEffect
-				bind:focusGuardRef
 				bind:firstButtonRef
 				bind:focusLastFocusedDate
 				bind:nextMonthButtonRef
+				bind:selectedDate
 				{dateInView}
 				{increaseMonthOffset}
 				{decreaseMonthOffset} />
 		</div>
-		<div>tabs</div>
 	</div>
 </div>
 
@@ -151,8 +168,13 @@
 		@apply flex justify-center items-center;
 	}
 
+	.select:hover .expand-button,
+	.expand-button:hover {
+		@apply bg-neutral-700;
+	}
+
 	.expand-button {
-		@apply hover:bg-neutral-700 transition-colors flex justify-center items-center p-2 rounded-full;
+		@apply transition-colors flex justify-center items-center p-2 rounded-full;
 	}
 
 	.expand-button:focus {
@@ -181,7 +203,7 @@
 	}
 
 	.calendar-container {
-		@apply flex flex-col bg-neutral-800 h-96 w-80 rounded-md overflow-hidden relative isolate;
+		@apply flex flex-col bg-neutral-800 h-fit pb-10 w-80 rounded-md overflow-hidden relative isolate;
 	}
 
 	.top-list {

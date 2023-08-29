@@ -26,7 +26,7 @@
 			</WidgetContainer>
 			<CurrencyWidget data={currencyWidgetData} />
 			<TodoWidget data={todoWidgetData} />
-			<WidgetContainer className="row-span-1">
+			<WidgetContainer className="row-span-2">
 				<DatePickerContainer on:datechange={handleDateChange} name="datum" />
 			</WidgetContainer>
 			<WidgetContainer className="row-span-1" />

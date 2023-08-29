@@ -4,7 +4,15 @@
 	import { cubicOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	import type { Day } from './types';
-	import { generateDaysInView, addWeek, subtractDay, addDay, subtractWeek, getDate } from './utils';
+	import {
+		generateDaysInView,
+		addWeek,
+		subtractDay,
+		addDay,
+		subtractWeek,
+		getDate,
+		arrowKeyCodes
+	} from './utils';
 	import { modulo } from '$lib/utilities/calculations';
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 
@@ -13,24 +21,23 @@
 	export let increaseMonthOffset: () => void;
 	export let increasedEffect: boolean;
 	export let decreasedEffect: boolean;
-	export let focusGuardRef: HTMLElement;
 	export let firstButtonRef: HTMLElement;
 	export let nextMonthButtonRef: HTMLElement;
+	export let selectedDate: Dayjs | null = null;
 
 	const today = dayjs();
 
 	let daysInView: Day[][];
-	let selectedDate: Dayjs | null = null;
 	let dayViewRef: HTMLElement;
 	let focusedDate: Dayjs = today;
+
+	let elementToFocus: HTMLElement | null;
 
 	$: {
 		const monthStartDaysOffset = modulo(dateInView.startOf('month').get('d') - 1, 7);
 
-		// 42 is number of tiles in calendar (6 rows * 7 columns)
-		const monthEndDaysOffset = 42 - (monthStartDaysOffset + dateInView.daysInMonth());
+		const monthEndDaysOffset = 42 - (monthStartDaysOffset + dateInView.daysInMonth()); // 42 is number of tiles in calendar (6 rows * 7 columns)
 
-		// Get number of last day in month before
 		const numOfDaysBefore = dateInView
 			.set('month', dateInView.get('month') - 1)
 			.endOf('month')
@@ -55,9 +62,7 @@
 
 	const navigationHandler = (event: KeyboardEvent) => {
 		if (!focusedDate) return;
-		if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(event.key))
-			event.preventDefault();
-		// TODO skusit extracnut do reactive statementu increase a decrease
+		if ([...arrowKeyCodes, 'Tab'].includes(event.key)) event.preventDefault();
 
 		if (event.key === 'ArrowDown') {
 			focusedDate = addWeek(focusedDate);
@@ -139,17 +144,14 @@
 
 	export const focusLastFocusedDate = (e: KeyboardEvent) => {
 		e.preventDefault();
-		let idToFind = `date-${focusedDate.format('DD.MM.YYYY')}`;
-
-		const element = document.getElementById(idToFind);
-
-		element?.focus();
+		elementToFocus?.focus();
 	};
+
+	$: elementToFocus = document.getElementById(`date-${focusedDate.format('DD.MM.YYYY')}`);
 
 	$: {
 		if (focusedDate && !(increasedEffect || decreasedEffect)) {
-			const element = document.getElementById(`date-${focusedDate.format('DD.MM.YYYY')}`);
-			element?.focus();
+			elementToFocus?.focus();
 		}
 	}
 </script>
@@ -166,9 +168,6 @@
 				decreasedEffect = false;
 			}}
 			on:introstart={() => {}}
-			on:outrostart={(e) => {
-				focusGuardRef.focus();
-			}}
 			on:introend={() => {
 				const element = document.getElementById(`date-${focusedDate.format('DD.MM.YYYY')}`);
 				element?.focus();

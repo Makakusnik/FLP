@@ -1,6 +1,8 @@
 import type { Dayjs } from 'dayjs';
 import type { Day } from './types';
 
+export const arrowKeyCodes = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'];
+export const numberKeyCodes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 export const generateDaysInView = (
 	offsetInBefore: number,
 	numOfDaysBefore: number,
