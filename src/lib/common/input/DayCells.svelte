@@ -24,6 +24,7 @@
 	export let firstButtonRef: HTMLElement;
 	export let nextMonthButtonRef: HTMLElement;
 	export let selectedDate: Dayjs | null = null;
+	export let closeDatePicker: () => void;
 
 	const today = dayjs();
 
@@ -108,6 +109,7 @@
 	const selectDate = (newDate: Dayjs) => {
 		selectedDate = newDate;
 		dateChangeDispatcher(newDate);
+		closeDatePicker();
 	};
 
 	const getTabindex = (

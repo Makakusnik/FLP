@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CancelIcon from '$lib/assets/icons/CancelIcon.svelte';
 	import Check from '$lib/assets/icons/Check.svelte';
+	import DatePickerContainer from '$lib/common/input/DatePickerContainer.svelte';
 	import Modal from '$lib/common/modal/Modal.svelte';
 	import ModalOverlay from '$lib/common/modal/ModalOverlay.svelte';
 
@@ -12,7 +13,11 @@
 
 	let dateFocus: boolean;
 	const onFocusDate = () => (dateFocus = true);
-	const onBlurDate = () => (dateFocus = false);
+	const onBlurDate = () => {
+		console.log('gay');
+
+		dateFocus = false;
+	};
 
 	const handleClose = () => (isOpened = false);
 </script>
@@ -43,14 +48,14 @@
 									id="listName" />
 							</span>
 							<span class="input-container">
-								<label for="until" class="label" class:focused-input={dateFocus}>Until</label>
-								<input
-									type="time"
-									on:focus={onFocusDate}
-									on:blur={onBlurDate}
-									on:change={(data) => console.log(data.currentTarget.value)}
-									class="input group"
-									id="until" />
+								<label for="until_datepicker" class="label" class:focused-input={dateFocus}
+									>Until</label>
+								<DatePickerContainer
+									name="until"
+									id="until_datepicker"
+									on:inputfocus={onFocusDate}
+									on:inputblur={onBlurDate}
+									inputclass="w-full rounded-md h-8 text-black px-2" />
 							</span>
 						</div>
 						<div class="half">

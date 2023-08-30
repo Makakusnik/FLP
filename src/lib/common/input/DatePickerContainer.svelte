@@ -4,12 +4,17 @@
 	import weekDayPlugin from 'dayjs/plugin/weekday';
 	import DatePicker from './DatePicker.svelte';
 	import customParseFormat from 'dayjs/plugin/customParseFormat';
-	import { numberKeyCodes } from './utils';
 	import CalendarIcon from '$lib/assets/icons/CalendarIcon.svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	dayjs.extend(customParseFormat);
 
 	export let name: string;
+	export let id: string;
+	export let inputclass: string;
+
+	const eventDispatcher = createEventDispatcher();
+
 	let selectedDate: Dayjs;
 	let dateFormat = 'DD.MM.YYYY';
 	let selectedDateString = dateFormat;
@@ -25,8 +30,12 @@
 	let focusGuardRef: HTMLDivElement;
 	let inputRef: HTMLInputElement;
 
-	const open = () => {
+	const openDatePicker = () => {
 		if (!isOpen) isOpen = true;
+	};
+
+	const closeDatePicker = () => {
+		isOpen = false;
 	};
 
 	const updateSelectedDateString = (date: Dayjs) => {
@@ -49,6 +58,8 @@
 	};
 
 	const handleBlur = (e: Event) => {
+		eventDispatcher('inputblur');
+
 		const value = (e?.target as HTMLInputElement)?.value;
 		const currentDate = dayjs(value, dateFormat);
 		if (currentDate.isValid()) {
@@ -61,14 +72,18 @@
 		}
 	};
 
+	const handleFocus = (e: Event) => {
+		eventDispatcher('inputfocus');
+	};
+
 	$: updateSelectedDateString(selectedDate);
 </script>
 
 <div class="main-container">
-	<label for={name}><slot /></label>
 	<div class="wrapper">
 		<input
-			id={name}
+			{id}
+			class={inputclass}
 			tabindex={isOpen ? -1 : 0}
 			type="text"
 			placeholder={dateFormat}
@@ -76,11 +91,14 @@
 			bind:this={inputRef}
 			on:input={handleInput}
 			on:blur={handleBlur}
-			on:click={open} />
+			on:focus={handleFocus}
+			on:click={openDatePicker} />
+		<!-- svelte-ignore a11y-no-static-element-interactions -->
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<span
-			on:click={open}
+			on:click={openDatePicker}
 			tabindex="-1"
-			class="text-indigo-600 p-1 absolute right-2 cursor-pointer hover:bg-purple-100 rounded-md">
+			class="text-indigo-600 p-1 absolute right-2 cursor-pointer hover:bg-indigo-400/20 rounded-md">
 			<CalendarIcon class="h-5 w-5" />
 		</span>
 	</div>
@@ -90,11 +108,12 @@
 	{#if isOpen}
 		<DatePicker
 			on:datechange
+			{id}
 			{name}
 			bind:inputRef
 			bind:selectedDate
-			bind:isOpen
-			bind:focusGuardRef />
+			bind:focusGuardRef
+			{closeDatePicker} />
 	{/if}
 </div>
 

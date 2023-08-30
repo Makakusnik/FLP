@@ -11,10 +11,11 @@
 	import { clickOutside } from '$lib/utilities/directives/clickOutside';
 	import { arrowKeyCodes } from './utils';
 	export let name: string;
-	export let isOpen: boolean;
+	export let closeDatePicker: () => void;
 	export let focusGuardRef: HTMLDivElement;
 	export let selectedDate: Dayjs;
 	export let inputRef: HTMLInputElement;
+	export let id: string;
 
 	dayjs.locale('sk');
 
@@ -30,9 +31,9 @@
 
 	const days: string[] = dayjsSkLocale.weekdaysMin || [];
 
-	const close = (e: Event) => {
+	const handleClickOutside = (e: Event) => {
 		if (document.activeElement === inputRef) return;
-		isOpen = false;
+		closeDatePicker();
 	};
 
 	const handleOpenYearView = () => (isYearViewOpen = !isYearViewOpen);
@@ -86,7 +87,7 @@
 <div
 	class="flex items-end mt-2 absolute"
 	use:clickOutside
-	on:clickoutside={close}
+	on:clickoutside={handleClickOutside}
 	in:fade={{ duration: 100 }}>
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 	<div id="focus-guard" bind:this={focusGuardRef} tabindex="0" />
@@ -132,7 +133,7 @@
 				</div>
 			{/if}
 		</div>
-		<div class="content" role="grid" aria-labelledby={name}>
+		<div class="content" role="grid" aria-labelledby={id}>
 			<div class="day-headers" role="row">
 				{#each days as _, index}
 					<span role="columnheader" aria-label={dayjs().weekday(index).format('dddd')}
@@ -146,6 +147,7 @@
 				bind:focusLastFocusedDate
 				bind:nextMonthButtonRef
 				bind:selectedDate
+				{closeDatePicker}
 				{dateInView}
 				{increaseMonthOffset}
 				{decreaseMonthOffset} />
