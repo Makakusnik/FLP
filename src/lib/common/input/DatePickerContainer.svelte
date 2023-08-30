@@ -11,7 +11,7 @@
 
 	export let name: string;
 	export let id: string;
-	export let inputclass: string;
+	export let inputclass: string | undefined;
 
 	const eventDispatcher = createEventDispatcher();
 
