@@ -33,11 +33,11 @@
 
 <style lang="postcss">
 	.select-content {
-		@apply flex gap-2 py-2 overflow-y-auto h-[21rem] justify-center items-center absolute w-full flex-wrap top-full left-0 bg-neutral-900 scroll-mt-20;
+		@apply flex gap-2 py-2 overflow-y-auto h-[21rem] justify-center items-center absolute w-full flex-wrap top-full left-0 bg-neutral-950 scroll-mt-20;
 	}
 
 	.select-content > button {
-		@apply flex p-2 cursor-pointer hover:bg-neutral-700 transition-colors rounded-lg;
+		@apply flex p-2 cursor-pointer hover:bg-neutral-900 transition-colors rounded-lg;
 	}
 
 	.select-content > .active {

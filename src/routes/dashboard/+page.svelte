@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Dropdown from '$lib/common/dropdown/Dropdown.svelte';
 	import DropdownItem from '$lib/common/dropdown/DropdownItem.svelte';
-	import DatePicker from '$lib/common/input/DatePicker.svelte';
-	import DatePickerContainer from '$lib/common/input/DatePickerContainer.svelte';
+	import DatePicker from '$lib/common/input/DatePickerView.svelte';
+	import DatePickerContainer from '$lib/common/input/DatePicker.svelte';
 	import CurrencyWidget from '$lib/common/widgets/CurrencyWidget/CurrencyWidget.svelte';
 	import TodoWidget from '$lib/common/widgets/TodoWidget/TodoWidget.svelte';
 	import WidgetContainer from '$lib/common/widgets/WidgetContainer.svelte';

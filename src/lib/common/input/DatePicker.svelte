@@ -1,214 +1,150 @@
 <script lang="ts">
-	import ChevronDownIcon from '$lib/assets/icons/ChevronDownIcon.svelte';
-	import ChevronLeftIcon from '$lib/assets/icons/ChevronLeftIcon.svelte';
-	import ChevronRightIcon from '$lib/assets/icons/ChevronRightIcon.svelte';
-	import { fade } from 'svelte/transition';
-	import dayjsSkLocale from 'dayjs/locale/sk';
+	import updateLocalePlugin from 'dayjs/plugin/updateLocale';
 	import dayjs, { Dayjs } from 'dayjs';
-	import YearView from './YearView.svelte';
-	import DayCells from './DayCells.svelte';
-	import { onDestroy, onMount } from 'svelte';
-	import { clickOutside } from '$lib/utilities/directives/clickOutside';
-	import { arrowKeyCodes } from './utils';
-	export let name: string;
-	export let closeDatePicker: () => void;
-	export let focusGuardRef: HTMLDivElement;
-	export let selectedDate: Dayjs;
-	export let inputRef: HTMLInputElement;
-	export let id: string;
+	import weekDayPlugin from 'dayjs/plugin/weekday';
+	import DatePickerView from './DatePickerView.svelte';
+	import customParseFormat from 'dayjs/plugin/customParseFormat';
+	import CalendarIcon from '$lib/assets/icons/CalendarIcon.svelte';
+	import { createEventDispatcher } from 'svelte';
 
+	dayjs.extend(customParseFormat);
+
+	export let name: string;
+	export let id: string;
+	export let inputclass: string = '';
+
+	const eventDispatcher = createEventDispatcher();
+
+	let selectedDate: Dayjs;
+	let dateFormat = 'DD.MM.YYYY';
+	let selectedDateString = dateFormat;
+
+	let hasError = false;
+
+	dayjs.extend(updateLocalePlugin);
+	dayjs.extend(weekDayPlugin);
 	dayjs.locale('sk');
 
-	let dateInView = dayjs();
-	let isYearViewOpen = false;
+	let isOpen = false;
 
-	let increasedEffect = false;
-	let decreasedEffect = false;
+	let focusGuardRef: HTMLDivElement;
+	let inputRef: HTMLInputElement;
 
-	let firstButtonRef: HTMLElement;
-	let nextMonthButtonRef: HTMLElement;
-	let focusLastFocusedDate: (e: KeyboardEvent) => void;
-
-	const days: string[] = dayjsSkLocale.weekdaysMin || [];
-
-	const handleClickOutside = (e: Event) => {
-		if (document.activeElement === inputRef) return;
-		closeDatePicker();
+	const openDatePicker = () => {
+		if (!isOpen) isOpen = true;
 	};
 
-	const handleOpenYearView = () => (isYearViewOpen = !isYearViewOpen);
-
-	const increaseMonthOffset = () => {
-		increasedEffect = true;
-		dateInView = dateInView.add(1, 'month');
-	};
-	const decreaseMonthOffset = () => {
-		decreasedEffect = true;
-		dateInView = dateInView.subtract(1, 'month');
+	const closeDatePicker = () => {
+		isOpen = false;
 	};
 
-	const handleFocusGuardKeydown = (e: KeyboardEvent) => {
-		if (arrowKeyCodes.includes(e.key)) e.preventDefault();
-	};
-
-	const handleFirstButtonFocusSwitch = (e: KeyboardEvent) => {
-		if (e.shiftKey && e.key === 'Tab') {
-			focusLastFocusedDate(e);
+	const updateSelectedDateString = (date: Dayjs) => {
+		if (date) {
+			selectedDateString = date.format(dateFormat) || '';
+		} else {
+			selectedDateString = '';
 		}
 	};
 
-	onMount(() => {
-		focusGuardRef.addEventListener('keydown', handleFocusGuardKeydown);
-		firstButtonRef.addEventListener('keydown', handleFirstButtonFocusSwitch);
-	});
-
-	onDestroy(() => {
-		focusGuardRef.removeEventListener('keydown', handleFocusGuardKeydown);
-		firstButtonRef.removeEventListener('keydown', handleFirstButtonFocusSwitch);
-	});
-
-	const updateDateInView = (date: Dayjs) => {
-		if (!date) return;
-		if (!date.isSame(dateInView, 'month')) {
-			dateInView = date;
+	const handleInput = (e: Event) => {
+		const value = (e?.target as HTMLInputElement)?.value;
+		const currentDate = dayjs(value, dateFormat);
+		if (currentDate.isValid()) {
+			selectedDate = currentDate;
+			hasError = false;
+		} else if (value === '') {
+			hasError = false;
 		}
 	};
 
-	$: {
-		updateDateInView(selectedDate);
-	}
+	const handleBlur = (e: Event) => {
+		eventDispatcher('inputblur');
 
-	const handleSelectYear = (year: number) => () => {
-		dateInView = dateInView.set('year', year);
-		isYearViewOpen = false;
+		const value = (e?.target as HTMLInputElement)?.value;
+		const currentDate = dayjs(value, dateFormat);
+		if (currentDate.isValid()) {
+			selectedDate = currentDate;
+			hasError = false;
+		} else if (value === '') {
+			hasError = false;
+		} else {
+			hasError = true;
+		}
 	};
+
+	const handleFocus = (e: Event) => {
+		eventDispatcher('inputfocus');
+	};
+
+	$: updateSelectedDateString(selectedDate);
 </script>
 
-<div
-	class="flex items-end mt-2 absolute"
-	use:clickOutside
-	on:clickoutside={handleClickOutside}
-	in:fade={{ duration: 100 }}>
-	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-	<div id="focus-guard" bind:this={focusGuardRef} tabindex="0" />
-	<div class="calendar-container" role="dialog">
-		<div class="top-list">
-			<div class="select" on:click={handleOpenYearView} role="presentation" aria-live="polite">
-				{#key dateInView}
-					<p class="month-title" in:fade>
-						{`${dateInView.format('MMMM')} ${dateInView.format('YYYY')}`}
-					</p>
-				{/key}
-				<button
-					type="button"
-					id="{name}-year-view-expand"
-					bind:this={firstButtonRef}
-					class="expand-button"
-					aria-label="Calendar is opened switch to year view."
-					><ChevronDownIcon
-						class="w-5 h-5 transition-transform {isYearViewOpen ? 'rotate-180' : ''}" /></button>
-			</div>
-			{#if isYearViewOpen}
-				<YearView {handleSelectYear} year={dateInView.get('year')} />
-			{/if}
-			{#if !isYearViewOpen}
-				<div class="month-buttons" transition:fade={{ duration: 100 }}>
-					<button
-						type="button"
-						id="{name}-prev-month-button"
-						on:click={decreaseMonthOffset}
-						title="Previous month"
-						aria-label="Previous month">
-						<ChevronLeftIcon class="w-5 h-5" />
-					</button>
-					<button
-						type="button"
-						id="{name}-next-month-button"
-						bind:this={nextMonthButtonRef}
-						on:click={increaseMonthOffset}
-						title="Next month"
-						aria-label="Next month">
-						<ChevronRightIcon class="w-5 h-5" />
-					</button>
-				</div>
-			{/if}
-		</div>
-		<div class="content" role="grid" aria-labelledby={id}>
-			<div class="day-headers" role="row">
-				{#each days as _, index}
-					<span role="columnheader" aria-label={dayjs().weekday(index).format('dddd')}
-						>{days[dayjs().weekday(index).get('d')]}</span>
-				{/each}
-			</div>
-			<DayCells
-				bind:increasedEffect
-				bind:decreasedEffect
-				bind:firstButtonRef
-				bind:focusLastFocusedDate
-				bind:nextMonthButtonRef
-				bind:selectedDate
-				{closeDatePicker}
-				{dateInView}
-				{increaseMonthOffset}
-				{decreaseMonthOffset} />
-		</div>
+<div class="main-container">
+	<div class="wrapper">
+		<input
+			{id}
+			class={inputclass}
+			tabindex={isOpen ? -1 : 0}
+			type="text"
+			placeholder={dateFormat}
+			value={selectedDateString}
+			bind:this={inputRef}
+			on:input={handleInput}
+			on:blur={handleBlur}
+			on:focus={handleFocus}
+			on:click={openDatePicker} />
+		<!-- svelte-ignore a11y-no-static-element-interactions -->
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<span
+			on:click={openDatePicker}
+			tabindex="-1"
+			class="text-indigo-600 p-1 absolute right-2 cursor-pointer hover:bg-indigo-400/20 rounded-md">
+			<CalendarIcon class="h-5 w-5" />
+		</span>
 	</div>
+	{#if hasError}
+		<small class="error">Wrong date format.</small>
+	{/if}
+	{#if isOpen}
+		<DatePickerView
+			on:datechange
+			{id}
+			{name}
+			bind:inputRef
+			bind:selectedDate
+			bind:focusGuardRef
+			{closeDatePicker} />
+	{/if}
 </div>
 
 <style lang="postcss">
-	.content {
-		@apply grid flex-col items-center justify-center;
+	input::placeholder {
+		@apply lowercase;
 	}
 
-	.day-headers {
-		@apply grid gap-x-1 h-full mt-2;
-		grid-template-columns: repeat(7, 1fr);
+	.main-container {
+		@apply relative;
 	}
 
-	.day-headers span {
-		@apply uppercase font-semibold w-8 h-4 text-xs text-neutral-400;
-		@apply flex justify-center items-center;
+	input {
+		@apply text-black px-1 w-full h-8;
 	}
 
-	.select:hover .expand-button,
-	.expand-button:hover {
-		@apply bg-neutral-700;
+	input:focus {
+		@apply bg-blue-200;
 	}
 
-	.expand-button {
-		@apply transition-colors flex justify-center items-center p-2 rounded-full;
+	.open-button {
+		@apply bg-neutral-500 w-fit px-2 py-1 rounded-sm mb-1 hover:bg-neutral-400 transition-colors;
 	}
 
-	.expand-button:focus {
-		@apply bg-neutral-600;
+	.open-button:focus {
+		@apply bg-indigo-400;
 	}
-
-	.month-buttons {
-		@apply flex ml-auto items-center mr-4 gap-x-4;
+	.error {
+		@apply text-red-300;
 	}
-
-	.month-buttons button {
-		@apply hover:bg-neutral-700 p-2 rounded-full transition-colors;
-	}
-
-	.month-buttons button:focus {
-		@apply bg-neutral-600;
-	}
-
-	.select {
-		@apply min-w-[10rem] px-1 py-1 items-center h-fit rounded-md m-1 cursor-pointer;
-		@apply relative flex justify-between;
-	}
-
-	.select p {
-		@apply font-medium px-4 py-1 transition-colors rounded-xl capitalize;
-	}
-
-	.calendar-container {
-		@apply flex flex-col bg-neutral-800 h-fit pb-10 w-80 rounded-md overflow-hidden relative isolate;
-	}
-
-	.top-list {
-		@apply flex relative z-10;
+	.wrapper {
+		@apply flex items-center relative w-full;
 	}
 </style>

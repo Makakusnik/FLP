@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CancelIcon from '$lib/assets/icons/CancelIcon.svelte';
 	import Check from '$lib/assets/icons/Check.svelte';
-	import DatePickerContainer from '$lib/common/input/DatePickerContainer.svelte';
+	import DatePicker from '$lib/common/input/DatePicker.svelte';
 	import Modal from '$lib/common/modal/Modal.svelte';
 	import ModalOverlay from '$lib/common/modal/ModalOverlay.svelte';
 
@@ -50,7 +50,7 @@
 							<span class="input-container">
 								<label for="until_datepicker" class="label" class:focused-input={dateFocus}
 									>Until</label>
-								<DatePickerContainer
+								<DatePicker
 									name="until"
 									id="until_datepicker"
 									on:inputfocus={onFocusDate}
