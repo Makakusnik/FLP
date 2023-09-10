@@ -1,7 +1,23 @@
 <script lang="ts">
+	import { onDestroy, onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
 	export let centerContent = true;
+	export let closeCallback: () => void;
+
+	const log = (e: KeyboardEvent) => {
+		if (e.key === 'Escape') {
+			closeCallback();
+		}
+	};
+
+	onMount(() => {
+		document.addEventListener('keydown', log);
+	});
+
+	onDestroy(() => {
+		document.removeEventListener('keydown', log);
+	});
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
