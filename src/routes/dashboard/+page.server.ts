@@ -1,11 +1,20 @@
 import type { ServerCurrencyData } from '$lib/common/widgets/CurrencyWidget/types';
 import type { TodoData } from '$lib/common/widgets/TodoWidget/types';
 import { codePairs, twoLetterCodes } from '$lib/constants/flags';
+import { superValidate } from 'sveltekit-superforms/server';
+import { z } from 'zod';
 
-export const load = () => {
+const schema = z.object({
+	listName: z.string(),
+	toDoUntil: z.date()
+});
+
+export const load = async () => {
 	const currencyData: ServerCurrencyData[] = populateCurrencyData();
 	const todoData: TodoData[] = populateTodoData();
-	return { currencyData, todoData };
+	const form = await superValidate(schema);
+
+	return { currencyData, todoData, form };
 };
 
 function generateRandomNumbersArray(number: number) {
