@@ -1,11 +1,11 @@
 <script lang="ts">
 	import CancelIcon from '$lib/assets/icons/CancelIcon.svelte';
-	import Check from '$lib/assets/icons/Check.svelte';
 	import { linear } from 'svelte/easing';
 	import { draw, fade, slide } from 'svelte/transition';
 	import { todoState } from '$lib/stores/widgets stores/todo.store';
 	import type { TodoLabel } from './types';
 	import TodoLabels from './TodoLabels.svelte';
+	import TickIcon from '$lib/assets/icons/TickIcon.svelte';
 
 	export let title = 'Unknown';
 	export let subtitle = 'Unknown';
@@ -73,7 +73,7 @@
 				{#if isHovering || shouldClose}
 					<span in:fade|local={{ duration: 100 }}>
 						{#if !canceled}
-							<Check class="w-4 h-4 text-blue-500" />
+							<TickIcon class="w-4 h-4 text-blue-500" />
 						{:else}
 							<CancelIcon class="w-4 h-4 text-red-500" />
 						{/if}
