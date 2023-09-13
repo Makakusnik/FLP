@@ -62,44 +62,18 @@ const populateTodoData = () => {
 	const todoParent1: TodoData = {
 		id: '0',
 		title: 'Create site',
-		allTasks: 4,
-		completedTasks: 4,
 		children: [
 			{
 				id: '0',
-				title: 'Create nginx config',
-				subtitle: 'Server',
-				labels: [
-					{
-						color: '#065f46',
-						text: 'devops',
-						textColor: 'white'
-					}
-				]
+				name: 'Create nginx config'
 			},
 			{
 				id: '1',
-				title: 'Add DNS type A for site',
-				subtitle: 'Network',
-				labels: [
-					{
-						color: '#065f46',
-						text: 'devops',
-						textColor: 'white'
-					}
-				]
+				name: 'Add DNS type A for site'
 			},
 			{
 				id: '2',
-				title: 'Setup github actions CI/CD pipline',
-				subtitle: 'Server',
-				labels: [
-					{
-						color: '#065f46',
-						text: 'devops',
-						textColor: 'white'
-					}
-				]
+				name: 'Setup github actions CI/CD pipline'
 			}
 		]
 	};
@@ -107,49 +81,18 @@ const populateTodoData = () => {
 	const todoParent2: TodoData = {
 		id: '1',
 		title: 'Fill fridge',
-		allTasks: 4,
-		completedTasks: 0,
 		children: [
 			{
 				id: '3',
-				title: 'Buy gas',
-				subtitle: 'Car',
-				labels: [
-					{
-						color: '#6d28d9',
-						text: 'chores',
-						textColor: 'white'
-					}
-				]
+				name: 'Buy gas'
 			},
 			{
 				id: '4',
-				title: 'Buy stuff',
-				subtitle: 'Shopping',
-				labels: [
-					{
-						color: '#6d28d9',
-						text: 'chores',
-						textColor: 'white'
-					}
-				]
+				name: 'Buy stuff'
 			},
 			{
 				id: '5',
-				title: "Don't forget kilo chleba",
-				subtitle: 'Shopping',
-				labels: [
-					{
-						color: '#6d28d9',
-						text: 'chores',
-						textColor: 'white'
-					},
-					{
-						color: '#be123c',
-						text: 'important',
-						textColor: 'white'
-					}
-				]
+				name: "Don't forget kilo chleba"
 			}
 		]
 	};

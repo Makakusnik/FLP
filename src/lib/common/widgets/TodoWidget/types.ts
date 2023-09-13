@@ -4,17 +4,13 @@ export type TodoLabel = {
 	text: string;
 };
 
-export type TodoItem = {
-	id: string;
-	title: string;
-	subtitle: string;
-	labels: TodoLabel[];
-};
-
 export type TodoData = {
 	id: string;
 	title: string;
-	allTasks: number;
-	completedTasks: number;
-	children: TodoItem[];
+	children: Task[];
+};
+
+export type Task = {
+	id: string;
+	name: string;
 };
