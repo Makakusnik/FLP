@@ -12,10 +12,14 @@
 	export let name: string;
 	export let id: string;
 	export let inputclass: string = '';
+	export let defaultDate: string = '';
 
 	const eventDispatcher = createEventDispatcher();
 
 	let selectedDate: Dayjs;
+	if (defaultDate) {
+		selectedDate = dayjs(defaultDate);
+	}
 	let dateFormat = 'DD.MM.YYYY';
 	let selectedDateString = dateFormat;
 
