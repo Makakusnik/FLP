@@ -2,30 +2,26 @@
 	import BinFillIcon from '$lib/assets/icons/BinFillIcon.svelte';
 	import ChevronDownIcon from '$lib/assets/icons/ChevronDownIcon.svelte';
 	import PencilIcon from '$lib/assets/icons/PencilIcon.svelte';
-	import PlusIcon from '$lib/assets/icons/PlusIcon.svelte';
 
 	export let closedContent = false;
-	export let completedTasks: number;
-	export let allTasks: number;
 	export let title: string;
+
+	export let editHandler: () => void;
+	export let removeHandler: () => void;
 
 	const toggleContentState = () => (closedContent = !closedContent);
 </script>
 
 <div class="list-wrapper">
 	<button class="main-button" on:click={toggleContentState}>
-		<p class="text-xs mr-2">{completedTasks} / {allTasks}</p>
 		<p>{title}</p>
 		<ChevronDownIcon class="ml-2 transition-transform {closedContent ? 'rotate-90' : ''}" />
 	</button>
 	<div class="action-button-wrapper">
-		<button class="action-button add">
-			<PlusIcon class="icon add" />
-		</button>
-		<button class="action-button edit">
+		<button class="action-button edit" on:click={editHandler}>
 			<PencilIcon class="icon edit" />
 		</button>
-		<button class="action-button remove">
+		<button class="action-button remove" on:click={removeHandler}>
 			<BinFillIcon class="icon remove" />
 		</button>
 	</div>
@@ -40,9 +36,6 @@
 		@apply flex items-center justify-center rounded-sm transition-colors w-7 h-7 bg-slate-100/5;
 	}
 
-	.action-button:hover.add {
-		@apply bg-green-300/10;
-	}
 	.action-button:hover.edit {
 		@apply bg-yellow-300/10;
 	}

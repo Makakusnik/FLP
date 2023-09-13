@@ -6,20 +6,25 @@
 	import Dropdown from '$lib/common/dropdown/Dropdown.svelte';
 	import DropdownItem from '$lib/common/dropdown/DropdownItem.svelte';
 	import WidgetContainer from '../WidgetContainer.svelte';
-	import type { TodoData } from './types';
+	import type { Task, TodoData } from './types';
 	import TodoView from './TodoView.svelte';
 	import BinFillIcon from '$lib/assets/icons/BinFillIcon.svelte';
 	import TodoFillIcon from '$lib/assets/icons/TodoFillIcon.svelte';
-	import HideFillIcon from '$lib/assets/icons/HideFillIcon.svelte';
-	import { todoState } from '$lib/stores/widgets stores/todo.store';
-	import ShowFillIcon from '$lib/assets/icons/ShowFillIcon.svelte';
-	import AddParentModal from './AddParentModal.svelte';
+	import AddOrEditParentModal from './Todo list modals/AddEditParentModal.svelte';
+	import PlusIcon from '$lib/assets/icons/PlusIcon.svelte';
 
 	export let data: TodoData[];
 
-	let isOpened = false;
+	let isOpenedAdd = false;
+	let isOpenedEdit = false;
 
-	const handleAddParent = () => (isOpened = true);
+	const openAddParent = () => (isOpenedAdd = true);
+	const openEditParent = () => (isOpenedEdit = true);
+	const handleRemoveParent = (id: string) => () => (data = data.filter((item) => item.id !== id));
+
+	const handleAddParent = (title: string, children: Task[]) => {
+		data.push({ id: new Date().toISOString() + 'parent', title, children });
+	};
 </script>
 
 <WidgetContainer title="Todo" className="widget-container">
@@ -42,31 +47,43 @@
 			Remove
 		</DropdownItem>
 	</Dropdown>
-	<AddParentModal bind:isOpened />
+	<AddOrEditParentModal bind:isOpened={isOpenedAdd} handleAddParent={openAddParent} />
+	<AddOrEditParentModal bind:isOpened={isOpenedEdit} data="{{ date: '1998-09-23' }}}" />
 	<div class="widget-content">
 		<div class="actions">
-			<button class="list-action-button" on:click={handleAddParent}
-				><TodoFillIcon class="w-5 h-5 text-indigo-300" />
-				<p>Add new todo list</p></button>
-			<button class="list-action-button">
-				{#if $todoState.showCompletedTasks}
-					<HideFillIcon class="w-5 h-5 text-indigo-300" />
-					<p>Hide completed tasks</p>
-				{:else}
-					<ShowFillIcon class="w-5 h-5 text-indigo-300" />
-					<p>Show completed tasks</p>
-				{/if}
+			<button class="list-action-button" on:click={openAddParent}>
+				<TodoFillIcon class="w-5 h-5 text-indigo-300" />
+				<p>Add new todo list</p>
 			</button>
 		</div>
 		<div class="content">
-			{#each data as todoData (todoData.id)}
-				<TodoView data={todoData} />
-			{/each}
+			{#if data && data.length > 0}
+				{#each data as todoData (todoData.id)}
+					<TodoView
+						data={todoData}
+						editHandler={openEditParent}
+						removeHandler={handleRemoveParent(todoData.id)} />
+				{/each}
+			{:else}
+				<div class="no-records-wrapper">
+					<p>No records found.</p>
+					<button class="add-new-button" on:click={openAddParent}
+						><PlusIcon class="w-5 h-5" /></button>
+				</div>
+			{/if}
 		</div>
 	</div>
 </WidgetContainer>
 
 <style lang="postcss">
+	.no-records-wrapper {
+		@apply flex flex-col py-2 w-full items-center gap-y-2;
+	}
+
+	.add-new-button {
+		@apply p-2 bg-indigo-400 rounded-full hover:bg-indigo-500 active:bg-indigo-600 transition-colors;
+	}
+
 	.content {
 		@apply flex flex-col overflow-y-auto gap-y-2;
 	}
@@ -81,7 +98,7 @@
 	}
 
 	.actions {
-		@apply flex gap-x-2 w-full p-2;
+		@apply flex gap-x-2 w-full p-2 bg-neutral-900/20;
 	}
 
 	:global(.widget-container) {

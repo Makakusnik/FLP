@@ -3,13 +3,9 @@
 	import { linear } from 'svelte/easing';
 	import { draw, fade, slide } from 'svelte/transition';
 	import { todoState } from '$lib/stores/widgets stores/todo.store';
-	import type { TodoLabel } from './types';
-	import TodoLabels from './TodoLabels.svelte';
 	import TickIcon from '$lib/assets/icons/TickIcon.svelte';
 
-	export let title = 'Unknown';
-	export let subtitle = 'Unknown';
-	export let labels: TodoLabel[] = [];
+	export let name = 'Unknown';
 
 	let shouldClose = false;
 	let isHovering = false;
@@ -47,9 +43,6 @@
 
 {#if !isClosed}
 	<li class="item" transition:slide|global>
-		{#if labels.length > 0}
-			<TodoLabels {labels} on:click={handleLabelClick} />
-		{/if}
 		<div class="check-button-wrapper">
 			<button
 				class="check-button"
@@ -64,7 +57,7 @@
 						<path
 							in:draw={{ duration: 1500, easing: linear }}
 							fill="none"
-							id="circle-{title}"
+							id="circle-{name}"
 							stroke="currentcolor"
 							stroke-width="3"
 							d="M 0, 0m 0, 23a 23,23 0 1,0 46,0a 23,23 0 1,0 -46,0" />
@@ -81,8 +74,7 @@
 				{/if}
 			</button>
 			<span class="heading">
-				<p class="title">{title}</p>
-				<p class="subtitle">{subtitle}</p>
+				<p class="title">{name}</p>
 			</span>
 		</div>
 	</li>

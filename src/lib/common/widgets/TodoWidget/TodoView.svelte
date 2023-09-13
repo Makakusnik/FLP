@@ -5,7 +5,10 @@
 
 	export let data: TodoData;
 
-	const { allTasks, children, completedTasks, title } = data;
+	export let editHandler: () => void;
+	export let removeHandler: () => void;
+
+	const { children, title } = data;
 
 	let closedContent = true;
 
@@ -14,15 +17,15 @@
 
 <div class="todo-wrapper">
 	<TodoMainList
-		{allTasks}
-		{completedTasks}
 		{title}
 		bind:closedContent
-		on:click={toggleContentState} />
+		on:click={toggleContentState}
+		{editHandler}
+		{removeHandler} />
 	{#if !closedContent}
 		<div class="todo-children">
-			{#each children as { labels, subtitle, title, id } (id)}
-				<TodoItem {title} {subtitle} {labels} />
+			{#each children as { name, id } (id)}
+				<TodoItem {name} />
 			{/each}
 		</div>
 	{/if}
