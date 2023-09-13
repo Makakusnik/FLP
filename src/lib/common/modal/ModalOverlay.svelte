@@ -13,10 +13,12 @@
 
 	onMount(() => {
 		document.addEventListener('keydown', log);
+		document.getElementsByTagName('body')[0].style.overflow = 'hidden';
 	});
 
 	onDestroy(() => {
 		document.removeEventListener('keydown', log);
+		document.getElementsByTagName('body')[0].style.overflow = 'auto';
 	});
 </script>
 

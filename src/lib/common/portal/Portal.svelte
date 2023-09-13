@@ -12,6 +12,6 @@
 	});
 </script>
 
-<div class="absolute" bind:this={ref}>
+<div class="fixed" bind:this={ref}>
 	<slot />
 </div>
