@@ -13,6 +13,7 @@
 	export let id: string;
 	export let inputclass: string = '';
 	export let defaultDate: string = '';
+	export let required: boolean = false;
 
 	const eventDispatcher = createEventDispatcher();
 
@@ -92,11 +93,13 @@
 			type="text"
 			placeholder={dateFormat}
 			value={selectedDateString}
+			{required}
 			bind:this={inputRef}
 			on:input={handleInput}
 			on:blur={handleBlur}
 			on:focus={handleFocus}
 			on:click={openDatePicker} />
+		<input type="hidden" {name} value={selectedDate} />
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<span
