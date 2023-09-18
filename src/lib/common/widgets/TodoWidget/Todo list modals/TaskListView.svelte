@@ -8,9 +8,7 @@
 
 	let listRef: HTMLDivElement;
 
-	const showForm = () => {
-		isAddingNewTask = true;
-	};
+	const showForm = () => (isAddingNewTask = true);
 
 	const introEndCallback = () => {
 		listRef.scrollTo({ top: listRef.clientHeight, behavior: 'smooth' });
@@ -20,12 +18,8 @@
 		isAddingNewTask = false;
 		tasks = [...tasks, { id, name }];
 	};
-	const handleRemove = (id: string) => () => {
-		tasks = tasks.filter((item) => item.id !== id);
-	};
-	const handleCancel = () => {
-		isAddingNewTask = false;
-	};
+	const handleRemove = (id: string) => () => (tasks = tasks.filter((item) => item.id !== id));
+	const handleCancel = () => (isAddingNewTask = false);
 
 	let isAddingNewTask = false;
 </script>
@@ -39,7 +33,8 @@
 			<TaskForm {introEndCallback} {handleCancel} {handleConfirm} />
 		{/if}
 	</div>
-	<button class="add-task-button" on:click={showForm}><PlusIcon class="w-4 h-4" /></button>
+	<button class="add-task-button" aria-label="Add new task" type="button" on:click={showForm}
+		><PlusIcon class="w-4 h-4" /></button>
 </div>
 
 <style lang="postcss">

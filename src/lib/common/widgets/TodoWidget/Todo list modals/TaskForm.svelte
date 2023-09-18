@@ -35,7 +35,7 @@
 			bind:value={name} />
 		<div class="task-actions">
 			<button class="confirm-task-button" type="submit"><TickIcon class="w-4 h-4" /></button>
-			<button class="cancel-task-button" on:click={handleCancel}
+			<button class="cancel-task-button" type="button" on:click={handleCancel}
 				><CancelIcon class="w-4 h-4" /></button>
 		</div>
 	</div>
