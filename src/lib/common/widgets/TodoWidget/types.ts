@@ -7,6 +7,7 @@ export type TodoLabel = {
 export type TodoData = {
 	id: string;
 	title: string;
+	date: string;
 	children: Task[];
 };
 
