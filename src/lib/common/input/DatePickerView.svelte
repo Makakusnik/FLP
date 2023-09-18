@@ -141,6 +141,7 @@
 				{/each}
 			</div>
 			<DayCells
+				on:datechange
 				bind:increasedEffect
 				bind:decreasedEffect
 				bind:firstButtonRef
