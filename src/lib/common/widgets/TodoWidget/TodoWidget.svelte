@@ -18,12 +18,22 @@
 	let isOpenedAdd = false;
 	let isOpenedEdit = false;
 
+	let itemToEdit: TodoData | undefined = undefined;
+
 	const openAddParent = () => (isOpenedAdd = true);
-	const openEditParent = () => (isOpenedEdit = true);
+	const openEditParent = (value: TodoData) => () => {
+		isOpenedEdit = true;
+		itemToEdit = value;
+	};
 	const handleRemoveParent = (id: string) => () => (data = data.filter((item) => item.id !== id));
 
-	const handleAddParent = (title: string, children: Task[]) => {
-		data.push({ id: new Date().toISOString() + 'parent', title, children });
+	const handleAddParent = (title: string, date: string, children: Task[]) => {
+		data.push({ id: new Date().toISOString() + 'parent', title, children, date });
+	};
+
+	const handleEditParent = (id: string, title: string, date: string, children: Task[]) => {
+		data = data.filter((item) => item.id !== id);
+		data = [...data, { id, title, date, children }];
 	};
 </script>
 
@@ -47,8 +57,12 @@
 			Remove
 		</DropdownItem>
 	</Dropdown>
-	<AddOrEditParentModal bind:isOpened={isOpenedAdd} handleAddParent={openAddParent} />
-	<AddOrEditParentModal bind:isOpened={isOpenedEdit} data="{{ date: '1998-09-23' }}}" />
+	{#if isOpenedAdd}
+		<AddOrEditParentModal bind:isOpened={isOpenedAdd} {handleAddParent} />
+	{/if}
+	{#if isOpenedEdit}
+		<AddOrEditParentModal bind:isOpened={isOpenedEdit} {handleEditParent} data={itemToEdit} />
+	{/if}
 	<div class="widget-content">
 		<div class="actions">
 			<button class="list-action-button" on:click={openAddParent}>
@@ -61,7 +75,7 @@
 				{#each data as todoData (todoData.id)}
 					<TodoView
 						data={todoData}
-						editHandler={openEditParent}
+						editHandler={openEditParent(todoData)}
 						removeHandler={handleRemoveParent(todoData.id)} />
 				{/each}
 			{:else}

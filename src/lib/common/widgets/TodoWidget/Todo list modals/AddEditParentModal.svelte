@@ -5,13 +5,25 @@
 	import Modal from '$lib/common/modal/Modal.svelte';
 	import ModalOverlay from '$lib/common/modal/ModalOverlay.svelte';
 	import TaskListView from './TaskListView.svelte';
-	import type { Task } from '../types';
+	import type { Task, TodoData } from '../types';
 
 	export let isOpened: boolean;
-	export let data: any = {};
-	export let handleAddParent: ((title: string, children: Task[]) => void) | undefined = () => {};
+	export let data: TodoData | undefined = undefined;
+	export let handleAddParent:
+		| ((title: string, date: string, children: Task[]) => void)
+		| undefined = () => {};
+
+	export let handleEditParent:
+		| ((id: string, title: string, date: string, children: Task[]) => void)
+		| undefined = () => {};
 
 	let nameFocus: boolean, dateFocus: boolean;
+
+	let isEditing = Boolean(data);
+
+	let name = data?.title || '';
+	let untilDate = data?.date || '';
+	let taskData = data?.children || [];
 
 	const onFocusName = () => (nameFocus = true);
 	const onBlurName = () => (nameFocus = false);
@@ -24,37 +36,18 @@
 	const handleSubmit = (e: Event) => {
 		const formData = new FormData(e.target as HTMLFormElement);
 		const listName = formData.get('listName') as string;
-		if (handleAddParent) {
-			handleAddParent(listName, taskData);
+		const untilDateValue = formData.get('untilDate') as string;
+		if (isEditing) {
+			if (!data?.id) {
+				throw new Error("Id is missing, can't edit record.");
+			}
+			console.log('untilDate', untilDateValue);
+
+			handleEditParent?.(data.id, listName, untilDateValue, taskData);
+		} else {
+			handleAddParent?.(listName, untilDateValue, taskData);
 		}
 	};
-
-	const taskData: Task[] = [
-		{
-			id: '1',
-			name: 'Task one'
-		},
-		{
-			id: '2',
-			name: 'Task two'
-		},
-		{
-			id: '3',
-			name: 'Task three'
-		},
-		{
-			id: '4',
-			name: 'Task f'
-		},
-		{
-			id: '5',
-			name: 'Task fff'
-		},
-		{
-			id: '6',
-			name: 'Task fff'
-		}
-	];
 </script>
 
 <Modal bind:isOpened>
@@ -62,7 +55,7 @@
 		<div class="modal-container">
 			<div class="topbar-container">
 				<div class="topbar-content">
-					<p class="title">Add new todo list</p>
+					<p class="title">{isEditing ? 'Edit todo list' : 'Add new todo list'}</p>
 					<div class="actions">
 						<button class="close-button" on:click={handleClose}>
 							<CancelIcon />
@@ -71,14 +64,15 @@
 				</div>
 				<hr class="topbar-divider" />
 			</div>
-			<div class="modal-content">
-				<form class="modal-form" on:submit={handleSubmit}>
+			<form on:submit|preventDefault={handleSubmit}>
+				<div class="modal-form-container">
 					<div class="half input-half">
 						<span class="input-container">
 							<label for="listName" class="label" class:focused-input={nameFocus}>List name</label>
 							<input
 								on:focus={onFocusName}
 								on:blur={onBlurName}
+								bind:value={name}
 								required
 								name="listName"
 								class="input group"
@@ -90,21 +84,24 @@
 							<DatePicker
 								name="untilDate"
 								id="until_datepicker"
+								on:datechange={(data) => {
+									untilDate = data.detail.toISOString();
+								}}
 								on:inputfocus={onFocusDate}
 								on:inputblur={onBlurDate}
-								defaultDate={data.date}
+								defaultDate={untilDate}
 								inputclass="w-full rounded-md h-8 text-black px-2" />
 						</span>
 					</div>
 					<div class="half">
 						<div class="left-content">
 							<p class="label">Tasks</p>
-							<TaskListView tasks={taskData} />
+							<TaskListView bind:tasks={taskData} />
 						</div>
 					</div>
-				</form>
-				<button class="add-button"><TickIcon /></button>
-			</div>
+				</div>
+				<button class="add-button" type="submit"><TickIcon /></button>
+			</form>
 		</div>
 	</ModalOverlay>
 </Modal>
@@ -134,7 +131,7 @@
 		@apply w-full rounded-md min-h-[2rem] text-black px-2;
 	}
 
-	.modal-form {
+	.modal-form-container {
 		@apply flex gap-x-6 w-full max-h-fit;
 	}
 
@@ -147,7 +144,7 @@
 		height: max-content;
 	}
 
-	.modal-content {
+	form {
 		@apply flex gap-x-4 h-full pt-4 w-full flex-col items-center;
 	}
 
