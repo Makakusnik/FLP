@@ -6,8 +6,7 @@
 <div
 	class="hack w-full h-full"
 	in:fly|global={{ x: 300, duration: 500, delay: 650 }}
-	out:fly|global={{ x: -800, duration: 600 }}
->
+	out:fly|global={{ x: -800, duration: 600 }}>
 	<div class="headlines">
 		<p>Product development phases</p>
 	</div>

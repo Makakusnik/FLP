@@ -1,5 +1,21 @@
-import type { ServerCurrencyData } from '$lib/common/widgets/CurrencyWidget/CurrencyWidgetTypes';
+import type { ServerCurrencyData } from '$lib/common/widgets/CurrencyWidget/types';
+import type { TodoData } from '$lib/common/widgets/TodoWidget/types';
 import { codePairs, twoLetterCodes } from '$lib/constants/flags';
+import { superValidate } from 'sveltekit-superforms/server';
+import { z } from 'zod';
+
+const schema = z.object({
+	listName: z.string(),
+	toDoUntil: z.date()
+});
+
+export const load = async () => {
+	const currencyData: ServerCurrencyData[] = populateCurrencyData();
+	const todoData: TodoData[] = populateTodoData();
+	const form = await superValidate(schema);
+
+	return { currencyData, todoData, form };
+};
 
 function generateRandomNumbersArray(number: number) {
 	const length = 9;
@@ -24,7 +40,7 @@ function generateRandomNumbersArray(number: number) {
 	return randomNumbersArray;
 }
 
-export const load = () => {
+const populateCurrencyData = () => {
 	const currencyData: ServerCurrencyData[] = [];
 	for (let i = 0; i < 9; i++) {
 		const flagCode = twoLetterCodes[i];
@@ -38,6 +54,52 @@ export const load = () => {
 			flagComponent: flagCode
 		});
 	}
+	return currencyData;
+};
 
-	return { currencyData: currencyData };
+const populateTodoData = () => {
+	const todoData: TodoData[] = [];
+	const todoParent1: TodoData = {
+		id: '0',
+		title: 'Create site',
+		date: new Date().toISOString(),
+		children: [
+			{
+				id: '0',
+				name: 'Create nginx config'
+			},
+			{
+				id: '1',
+				name: 'Add DNS type A for site'
+			},
+			{
+				id: '2',
+				name: 'Setup github actions CI/CD pipline'
+			}
+		]
+	};
+
+	const todoParent2: TodoData = {
+		id: '1',
+		title: 'Fill fridge',
+		date: new Date().toISOString(),
+		children: [
+			{
+				id: '3',
+				name: 'Buy gas'
+			},
+			{
+				id: '4',
+				name: 'Buy stuff'
+			},
+			{
+				id: '5',
+				name: "Don't forget kilo chleba"
+			}
+		]
+	};
+
+	todoData.push(todoParent1, todoParent2);
+
+	return todoData;
 };

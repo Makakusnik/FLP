@@ -5,7 +5,6 @@
 </script>
 
 <div
-	class="flex flex-col items-center w-full h-full relative isolate {hasGradient ? gradient : ''}"
->
+	class="flex flex-col items-center w-full h-full relative isolate {hasGradient ? gradient : ''}">
 	<slot />
 </div>

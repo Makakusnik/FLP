@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let className = '';
 	export let title = '';
-	let showTopList = $$slots.dropdown;
+	let showTopList = $$slots.dropdown || title;
 </script>
 
 <section class="widget {className}">
@@ -28,7 +28,7 @@
 	}
 
 	.widget {
-		@apply flex flex-col bg-slate-700 w-full h-[16rem] overflow-hidden;
+		@apply flex flex-col bg-slate-700 w-full overflow-hidden;
 		@apply p-3;
 	}
 

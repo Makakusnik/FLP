@@ -30,7 +30,7 @@
 </script>
 
 <div class="item">
-	<span class="currency"
+	<span class="currency" title={name}
 		>{#if flagComponent}
 			<svelte:component this={flagComponent} class="w-6 h-6" />
 		{/if}
@@ -55,14 +55,12 @@
 </div>
 
 <style lang="postcss">
-	.hidden {
-		@apply opacity-0;
-	}
 	.chart {
 		@apply flex px-2 w-20 items-center mx-auto;
 	}
 	.item {
-		@apply grid grid-cols-4 gap-x-2 text-sm px-1;
+		@apply grid gap-x-2 text-sm px-1;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 0.6fr) minmax(0, 1fr) minmax(0, 1fr);
 	}
 	.item p {
 		@apply flex justify-center;
