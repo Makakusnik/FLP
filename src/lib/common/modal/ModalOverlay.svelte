@@ -28,7 +28,7 @@
 	transition:fade|local={{ duration: 100 }}
 	class="modal-overlay"
 	class:centerContent
-	on:click|self>
+	on:click|self={closeCallback}>
 	<slot />
 </div>
 

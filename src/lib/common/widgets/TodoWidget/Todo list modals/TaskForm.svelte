@@ -30,7 +30,7 @@
 			class="name-input"
 			autofocus
 			name="taskName"
-			pattern="^\S+$"
+			pattern="^\S+(\S+[^\S\r\n]*)*$"
 			required
 			bind:value={name} />
 		<div class="task-actions">

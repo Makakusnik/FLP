@@ -1,14 +1,16 @@
 <script lang="ts">
 	import TodoItem from './TodoItem.svelte';
 	import TodoMainList from './TodoMainList.svelte';
-	import type { TodoData } from './types';
+	import type { Task } from './types';
 
-	export let data: TodoData;
+	export let children: Task[];
+	export let title: string;
+	export let todoId: string;
 
 	export let editHandler: () => void;
 	export let removeHandler: () => void;
 
-	const { children, title } = data;
+	export let removeItem: (todoId: string, itemId: string) => () => void;
 
 	let closedContent = true;
 
@@ -24,14 +26,24 @@
 		{removeHandler} />
 	{#if !closedContent}
 		<div class="todo-children">
-			{#each children as { name, id } (id)}
-				<TodoItem {name} />
-			{/each}
+			{#if children.length > 0}
+				{#each children as { name, id: itemId } (itemId)}
+					<TodoItem {name} remove={removeItem(todoId, itemId)} />
+				{/each}
+			{:else}
+				<div class="no-records-wrapper">
+					<p>No records found.</p>
+				</div>
+			{/if}
 		</div>
 	{/if}
 </div>
 
 <style lang="postcss">
+	.no-records-wrapper {
+		@apply flex flex-col py-2 w-full items-center gap-y-2;
+	}
+
 	.todo-wrapper {
 		@apply py-2 bg-neutral-500/5;
 	}

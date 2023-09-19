@@ -2,10 +2,10 @@
 	import CancelIcon from '$lib/assets/icons/CancelIcon.svelte';
 	import { linear } from 'svelte/easing';
 	import { draw, fade, slide } from 'svelte/transition';
-	import { todoState } from '$lib/stores/widgets stores/todo.store';
 	import TickIcon from '$lib/assets/icons/TickIcon.svelte';
 
 	export let name = 'Unknown';
+	export let remove: () => void;
 
 	let shouldClose = false;
 	let isHovering = false;
@@ -20,16 +20,14 @@
 			setTimeout(() => {
 				canceled = false;
 			}, 1000);
+			remove();
 		} else {
 			timeoutId = setTimeout(() => {
 				isClosed = true;
 				canceled = false;
+				remove();
 			}, 1550);
 		}
-	};
-
-	let handleLabelClick = () => {
-		$todoState.areLabelsExpanded = !$todoState.areLabelsExpanded;
 	};
 
 	let handleRemoveClick = () => {

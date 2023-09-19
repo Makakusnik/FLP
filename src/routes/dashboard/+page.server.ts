@@ -62,6 +62,7 @@ const populateTodoData = () => {
 	const todoParent1: TodoData = {
 		id: '0',
 		title: 'Create site',
+		date: new Date().toISOString(),
 		children: [
 			{
 				id: '0',
@@ -81,6 +82,7 @@ const populateTodoData = () => {
 	const todoParent2: TodoData = {
 		id: '1',
 		title: 'Fill fridge',
+		date: new Date().toISOString(),
 		children: [
 			{
 				id: '3',

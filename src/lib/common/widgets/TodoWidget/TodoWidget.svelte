@@ -25,16 +25,31 @@
 		isOpenedEdit = true;
 		itemToEdit = value;
 	};
+
+	const handleCloseAdd = () => (isOpenedAdd = false);
+	const handleCloseEdit = () => (isOpenedEdit = false);
+
 	const handleRemoveParent = (id: string) => () => (data = data.filter((item) => item.id !== id));
 
 	const handleAddParent = (title: string, date: string, children: Task[]) => {
-		data.push({ id: new Date().toISOString() + 'parent', title, children, date });
+		data = [...data, { id: new Date().toISOString() + 'parent', title, children, date }];
+		handleCloseAdd();
 	};
 
 	const handleEditParent = (id: string, title: string, date: string, children: Task[]) => {
 		data = data.filter((item) => item.id !== id);
 		data = [...data, { id, title, date, children }];
+		handleCloseEdit();
 	};
+
+	const removeItem = (todoId: string, itemId: string) => () => {
+		const item = data.filter((item) => item.id === todoId)[0];
+		data = data.filter((item) => item.id !== todoId);
+		const newChildren = item.children.filter((item) => item.id !== itemId);
+		data = [...data, { id: item.id, title: item.title, date: item.date, children: newChildren }];
+	};
+
+	$: data.sort((a, b) => (a.id < b.id ? 1 : -1));
 </script>
 
 <WidgetContainer title="Todo" className="widget-container">
@@ -58,10 +73,17 @@
 		</DropdownItem>
 	</Dropdown>
 	{#if isOpenedAdd}
-		<AddOrEditParentModal bind:isOpened={isOpenedAdd} {handleAddParent} />
+		<AddOrEditParentModal
+			bind:isOpened={isOpenedAdd}
+			{handleAddParent}
+			handleClose={handleCloseAdd} />
 	{/if}
 	{#if isOpenedEdit}
-		<AddOrEditParentModal bind:isOpened={isOpenedEdit} {handleEditParent} data={itemToEdit} />
+		<AddOrEditParentModal
+			bind:isOpened={isOpenedEdit}
+			{handleEditParent}
+			data={itemToEdit}
+			handleClose={handleCloseEdit} />
 	{/if}
 	<div class="widget-content">
 		<div class="actions">
@@ -74,7 +96,10 @@
 			{#if data && data.length > 0}
 				{#each data as todoData (todoData.id)}
 					<TodoView
-						data={todoData}
+						{removeItem}
+						todoId={todoData.id}
+						children={todoData.children}
+						title={todoData.title}
 						editHandler={openEditParent(todoData)}
 						removeHandler={handleRemoveParent(todoData.id)} />
 				{/each}

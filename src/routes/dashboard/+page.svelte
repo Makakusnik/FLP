@@ -7,14 +7,10 @@
 	import TodoWidget from '$lib/common/widgets/TodoWidget/TodoWidget.svelte';
 	import WidgetContainer from '$lib/common/widgets/WidgetContainer.svelte';
 	import type { Dayjs } from 'dayjs';
-	import { superForm } from 'sveltekit-superforms/client';
 
 	export let data;
 
 	const { currencyWidgetData, todoWidgetData, form: formData } = data;
-	console.log(formData);
-
-	const { form, enhance, constraints, validate } = superForm(formData);
 
 	const handleDateChange = (data: CustomEvent<Dayjs>) => {};
 </script>

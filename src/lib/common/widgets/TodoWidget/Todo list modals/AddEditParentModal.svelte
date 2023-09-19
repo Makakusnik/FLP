@@ -16,6 +16,7 @@
 	export let handleEditParent:
 		| ((id: string, title: string, date: string, children: Task[]) => void)
 		| undefined = () => {};
+	export let handleClose: () => void;
 
 	let nameFocus: boolean, dateFocus: boolean;
 
@@ -31,8 +32,6 @@
 	const onFocusDate = () => (dateFocus = true);
 	const onBlurDate = () => (dateFocus = false);
 
-	const handleClose = () => (isOpened = false);
-
 	const handleSubmit = (e: Event) => {
 		const formData = new FormData(e.target as HTMLFormElement);
 		const listName = formData.get('listName') as string;
@@ -41,8 +40,6 @@
 			if (!data?.id) {
 				throw new Error("Id is missing, can't edit record.");
 			}
-			console.log('untilDate', untilDateValue);
-
 			handleEditParent?.(data.id, listName, untilDateValue, taskData);
 		} else {
 			handleAddParent?.(listName, untilDateValue, taskData);
@@ -51,7 +48,7 @@
 </script>
 
 <Modal bind:isOpened>
-	<ModalOverlay on:click={handleClose} closeCallback={handleClose}>
+	<ModalOverlay closeCallback={handleClose}>
 		<div class="modal-container">
 			<div class="topbar-container">
 				<div class="topbar-content">
@@ -84,6 +81,7 @@
 							<DatePicker
 								name="untilDate"
 								id="until_datepicker"
+								required={true}
 								on:datechange={(data) => {
 									untilDate = data.detail.toISOString();
 								}}
@@ -100,7 +98,10 @@
 						</div>
 					</div>
 				</div>
-				<button class="add-button" type="submit"><TickIcon /></button>
+				<button
+					class="add-button"
+					aria-label={isEditing ? 'Submit changes.' : 'Add new todo list.'}
+					type="submit"><TickIcon /></button>
 			</form>
 		</div>
 	</ModalOverlay>
