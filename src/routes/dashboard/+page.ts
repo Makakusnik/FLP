@@ -1,13 +1,12 @@
 import type { Currency, ServerCurrencyData } from '$lib/common/widgets/CurrencyWidget/types';
 import { Af, Al, No, Eu, Us, Cz, Gb, Ch, Pl } from 'svelte-flag-icons';
 
-export const load = ({ data: { currencyData, todoData, form } }) => {
-	const modifiedCurrencyData = addIconsToCurrencyData(currencyData);
+export const load = ({ data }) => {
+	const modifiedCurrencyData = addIconsToCurrencyData(data.currencyData);
 
 	return {
-		currencyWidgetData: modifiedCurrencyData,
-		todoWidgetData: todoData,
-		form
+		...data,
+		currencyWidgetData: modifiedCurrencyData
 	};
 };
 

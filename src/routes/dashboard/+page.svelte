@@ -1,18 +1,14 @@
 <script lang="ts">
 	import Dropdown from '$lib/common/dropdown/Dropdown.svelte';
 	import DropdownItem from '$lib/common/dropdown/DropdownItem.svelte';
-	import DatePicker from '$lib/common/input/DatePickerView.svelte';
-	import DatePickerContainer from '$lib/common/input/DatePicker.svelte';
 	import CurrencyWidget from '$lib/common/widgets/CurrencyWidget/CurrencyWidget.svelte';
 	import TodoWidget from '$lib/common/widgets/TodoWidget/TodoWidget.svelte';
 	import WidgetContainer from '$lib/common/widgets/WidgetContainer.svelte';
-	import type { Dayjs } from 'dayjs';
+	import SalesWidget from '$lib/common/widgets/SalesWidget/SalesWidget.svelte';
 
 	export let data;
 
-	const { currencyWidgetData, todoWidgetData, form: formData } = data;
-
-	const handleDateChange = (data: CustomEvent<Dayjs>) => {};
+	const { currencyWidgetData, todoData, orderData } = data;
 </script>
 
 <main class="h-full w-full">
@@ -27,10 +23,9 @@
 				</Dropdown>
 			</WidgetContainer>
 			<CurrencyWidget data={currencyWidgetData} />
-			<TodoWidget data={todoWidgetData} />
-			<WidgetContainer className="row-span-2">
-				<DatePickerContainer on:datechange={handleDateChange} name="datum" id="date" />
-			</WidgetContainer>
+			<TodoWidget data={todoData} />
+			<SalesWidget data={orderData} />
+			<WidgetContainer className="row-span-1 col-span-1" />
 			<WidgetContainer className="row-span-1" />
 			<WidgetContainer className="row-span-1" />
 			<WidgetContainer className="row-span-1" />
