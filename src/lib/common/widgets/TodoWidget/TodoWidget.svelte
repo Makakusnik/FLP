@@ -52,7 +52,7 @@
 	$: data.sort((a, b) => (a.id < b.id ? 1 : -1));
 </script>
 
-<WidgetContainer title="Todo" className="widget-container">
+<WidgetContainer title="Todo" className="sm:col-span-2 row-span-2 isolate">
 	<Dropdown slot="dropdown" title="Settings">
 		<SettingsIcon slot="titleIcon" />
 		<DropdownItem>
@@ -138,9 +138,5 @@
 
 	.actions {
 		@apply flex gap-x-2 w-full p-2 bg-neutral-900/20;
-	}
-
-	:global(.widget-container) {
-		@apply sm:col-span-2 row-span-2 isolate;
 	}
 </style>
