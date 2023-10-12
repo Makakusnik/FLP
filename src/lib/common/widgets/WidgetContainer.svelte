@@ -28,11 +28,12 @@
 	}
 
 	.widget {
-		@apply flex flex-col bg-slate-700 w-full overflow-hidden;
-		@apply p-3;
+		@apply grid p-3 bg-slate-700 w-full overflow-hidden;
+		grid-template-rows: auto 1fr;
 	}
 
 	.list {
-		@apply flex w-full h-fit justify-between mb-2;
+		@apply flex w-full h-fit mb-4 justify-between;
+		height: 28px;
 	}
 </style>
