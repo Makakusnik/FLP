@@ -28,11 +28,11 @@
 
 <style lang="postcss">
 	.hamburger {
-		@apply w-12 p-2 hover:bg-slate-500/20 transition-colors;
+		@apply w-12 p-2 bg-indigo-950 hover:bg-indigo-900/80 transition-colors;
 	}
 
 	.hamburger-container {
-		@apply flex w-12 items-center justify-start overflow-hidden;
+		@apply md:fixed flex w-12 items-center justify-start overflow-hidden;
 		transition: width 200ms ease-in-out, background-color 200ms ease-in-out;
 	}
 
@@ -45,7 +45,7 @@
 	}
 
 	.closing-chevron {
-		@apply flex opacity-0 justify-center ml-auto w-12 h-full hover:bg-slate-700/40 transition-all duration-300;
+		@apply flex opacity-0 justify-center p-2 ml-auto w-12 h-full hover:bg-slate-700/40 transition-all duration-300;
 		@apply hover:text-indigo-400;
 	}
 

@@ -30,7 +30,7 @@
 
 <style lang="postcss">
 	.sidebarContainer {
-		@apply hidden md:flex md:w-12 absolute h-screen bg-slate-800 overflow-hidden;
+		@apply hidden md:flex md:fixed md:w-12 absolute h-screen bg-slate-800 overflow-hidden;
 		transition: width 200ms ease-in-out;
 	}
 
