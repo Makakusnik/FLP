@@ -8,7 +8,17 @@
 	import DropdownItem from '$lib/common/dropdown/DropdownItem.svelte';
 
 	import WidgetContainer from '../WidgetContainer.svelte';
+	import OrderDetailsModal from './Modal/OrderDetailsModal.svelte';
 	import type { Order } from './types';
+
+	let isOpenedDetail = false;
+	let handleClose = () => (isOpenedDetail = false);
+	let openedOrder: Order;
+
+	let openDetail = (data: Order) => () => {
+		isOpenedDetail = true;
+		openedOrder = data;
+	};
 
 	export let data: Order[] = [];
 </script>
@@ -34,15 +44,19 @@
 		</DropdownItem>
 	</Dropdown>
 	<div class="widget-content">
+		{#if isOpenedDetail}
+			<OrderDetailsModal bind:isOpened={isOpenedDetail} {handleClose} data={openedOrder} />
+		{/if}
 		<div class="item-container">
-			{#each data as { items, id, person } (id)}
-				{#each items as { quantity, boughtAtPrice, name }}
+			{#each data as order (order.id)}
+				{#each order.items as { quantity, boughtAtPrice, name }}
 					<div class="item">
 						<p class="productName" title={name}>{name}</p>
 						<p class="price">{boughtAtPrice} $</p>
 						<p class="quantity">{quantity}</p>
-						<p class="person">{person.name}</p>
-						<button class="action-button"><DotsIcon class="w-4 h-4" /></button>
+						<p class="person">{order.person.name}</p>
+						<button class="action-button" on:click={openDetail(order)}
+							><DotsIcon class="w-4 h-4" /></button>
 					</div>
 				{/each}
 			{/each}
