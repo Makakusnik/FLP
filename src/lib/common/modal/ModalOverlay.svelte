@@ -13,7 +13,7 @@
 
 	onMount(() => {
 		document.addEventListener('keydown', log);
-		document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+		document.getElementsByTagName('body')[0].style.overflow = 'hidden'; // blocks scrolling while modal is opened.
 	});
 
 	onDestroy(() => {
