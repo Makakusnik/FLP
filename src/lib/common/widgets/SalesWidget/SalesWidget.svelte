@@ -6,18 +6,19 @@
 	import SettingsIcon from '$lib/assets/icons/SettingsIcon.svelte';
 	import Dropdown from '$lib/common/dropdown/Dropdown.svelte';
 	import DropdownItem from '$lib/common/dropdown/DropdownItem.svelte';
+	import { useModalState } from '$lib/common/modal/modalStore';
 
 	import WidgetContainer from '../WidgetContainer.svelte';
 	import OrderDetailsModal from './Modal/OrderDetailsModal.svelte';
 	import type { Order } from './types';
 
-	let isOpenedDetail = false;
-	let handleClose = () => (isOpenedDetail = false);
+	const { isOpened, open, close } = useModalState();
+
 	let openedOrder: Order;
 
 	let openDetail = (data: Order) => () => {
-		isOpenedDetail = true;
 		openedOrder = data;
+		open();
 	};
 
 	export let data: Order[] = [];
@@ -44,8 +45,8 @@
 		</DropdownItem>
 	</Dropdown>
 	<div class="widget-content">
-		{#if isOpenedDetail}
-			<OrderDetailsModal bind:isOpened={isOpenedDetail} {handleClose} data={openedOrder} />
+		{#if $isOpened}
+			<OrderDetailsModal bind:isOpened={$isOpened} {close} data={openedOrder} />
 		{/if}
 		<div class="item-container">
 			{#each data as order (order.id)}

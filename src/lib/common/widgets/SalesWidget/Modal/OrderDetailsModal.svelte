@@ -4,12 +4,12 @@
 	import type { Order } from '../types';
 
 	export let isOpened: boolean;
-	export let handleClose: () => void;
+	export let close: () => void;
 	export let data: Order;
 </script>
 
 <Modal bind:isOpened>
-	<ModalOverlay closeCallback={handleClose}>
+	<ModalOverlay closeCallback={close}>
 		<div class="modal-container">
 			{data.person.name}
 		</div>

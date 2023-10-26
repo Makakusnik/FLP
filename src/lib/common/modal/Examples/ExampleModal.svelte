@@ -1,14 +1,14 @@
 <script lang="ts">
 	import Modal from '$lib/common/modal/Modal.svelte';
 	import ModalOverlay from '$lib/common/modal/ModalOverlay.svelte';
-	import CustomModalNestedConfirmation2 from '../../../../routes/(main)/ExampleConfirmation.svelte';
+	import ExampleConfirmation from './ExampleConfirmation.svelte';
 	import { useModalState } from '$lib/common/modal/modalStore';
-	import type { Confirmation } from '$lib/events/confirmations';
+	import type { Confirmation, ConfirmationEvent } from '$lib/events/confirmations';
 
 	export let isOpened: boolean;
 	export let close: () => void;
 
-	let confirmationState: Confirmation | undefined = undefined;
+	let confirmationState: Confirmation;
 
 	let {
 		isOpened: isOpenedConfirmation,
@@ -22,7 +22,7 @@
 		}
 	};
 
-	const handleResolve = (e: CustomEvent<Confirmation>) => {
+	const handleResolve = (e: ConfirmationEvent) => {
 		confirmationState = e.detail;
 		closeConfirmation();
 	};
@@ -32,8 +32,8 @@
 	<ModalOverlay closeCallback={handleCustomClose}>
 		<div class="modal-container">
 			<button on:click={openConfirmation}>Open confirmation 2</button>
-			{#if isOpened}
-				<CustomModalNestedConfirmation2
+			{#if isOpenedConfirmation}
+				<ExampleConfirmation
 					on:resolve={handleResolve}
 					close={closeConfirmation}
 					isOpened={$isOpenedConfirmation} />
