@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Portal from '../portal/Portal.svelte';
-
 	export let isOpened: boolean;
 </script>
 
