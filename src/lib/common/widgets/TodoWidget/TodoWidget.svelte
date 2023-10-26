@@ -12,34 +12,31 @@
 	import TodoFillIcon from '$lib/assets/icons/TodoFillIcon.svelte';
 	import AddOrEditParentModal from './Todo list modals/AddEditParentModal.svelte';
 	import PlusIcon from '$lib/assets/icons/PlusIcon.svelte';
+	import { useModalState } from '$lib/common/modal/modalStore';
 
 	export let data: TodoData[];
 
-	let isOpenedAdd = false;
-	let isOpenedEdit = false;
+	let { isOpened: isOpenedAdd, open: openAddModal, close: closeAdd } = useModalState();
+	let { isOpened: isOpenedEdit, open: openEdit, close: closeEdit } = useModalState();
 
 	let itemToEdit: TodoData | undefined = undefined;
 
-	const openAddParent = () => (isOpenedAdd = true);
 	const openEditParent = (value: TodoData) => () => {
-		isOpenedEdit = true;
+		openEdit();
 		itemToEdit = value;
 	};
-
-	const handleCloseAdd = () => (isOpenedAdd = false);
-	const handleCloseEdit = () => (isOpenedEdit = false);
 
 	const handleRemoveParent = (id: string) => () => (data = data.filter((item) => item.id !== id));
 
 	const handleAddParent = (title: string, date: string, children: Task[]) => {
 		data = [...data, { id: new Date().toISOString() + 'parent', title, children, date }];
-		handleCloseAdd();
+		closeAdd();
 	};
 
 	const handleEditParent = (id: string, title: string, date: string, children: Task[]) => {
 		data = data.filter((item) => item.id !== id);
 		data = [...data, { id, title, date, children }];
-		handleCloseEdit();
+		closeEdit();
 	};
 
 	const removeItem = (todoId: string, itemId: string) => () => {
@@ -73,21 +70,18 @@
 		</DropdownItem>
 	</Dropdown>
 	{#if isOpenedAdd}
-		<AddOrEditParentModal
-			bind:isOpened={isOpenedAdd}
-			{handleAddParent}
-			handleClose={handleCloseAdd} />
+		<AddOrEditParentModal bind:isOpened={$isOpenedAdd} {handleAddParent} handleClose={closeAdd} />
 	{/if}
 	{#if isOpenedEdit}
 		<AddOrEditParentModal
-			bind:isOpened={isOpenedEdit}
+			bind:isOpened={$isOpenedEdit}
 			{handleEditParent}
 			data={itemToEdit}
-			handleClose={handleCloseEdit} />
+			handleClose={closeEdit} />
 	{/if}
 	<div class="widget-content">
 		<div class="actions">
-			<button class="list-action-button" on:click={openAddParent}>
+			<button class="list-action-button" on:click={openAddModal}>
 				<TodoFillIcon class="w-5 h-5 text-indigo-300" />
 				<p>Add new todo list</p>
 			</button>
@@ -106,7 +100,7 @@
 			{:else}
 				<div class="no-records-wrapper">
 					<p>No records found.</p>
-					<button class="add-new-button" on:click={openAddParent}
+					<button class="add-new-button" on:click={openAddModal}
 						><PlusIcon class="w-5 h-5" /></button>
 				</div>
 			{/if}
