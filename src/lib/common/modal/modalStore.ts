@@ -9,10 +9,10 @@ export function useModalState(storeName?: string) {
 			console.log('No more subs: ', storeName);
 		};
 	};
-	const { subscribe, update } = writable(false, storeName ? startStop : undefined);
+	const { set, subscribe, update } = writable(false, storeName ? startStop : undefined);
 
 	const open = () => update(() => true);
 	const close = () => update(() => false);
 
-	return { isOpened: { subscribe }, open, close };
+	return { isOpened: { subscribe, set }, open, close };
 }
